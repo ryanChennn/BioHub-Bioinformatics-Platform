@@ -1,0 +1,290 @@
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_PublicLayout";
+}
+
+<main class="w-full pt-20 bg-surface min-h-[calc(100vh-80px)]"><div class="flex flex-col w-full">
+<!-- HERO SECTION -->
+<section class="relative w-full overflow-hidden bg-gradient-to-b from-surface-container-low/70 via-surface to-surface pb-space-xl">
+<div class="max-w-7xl mx-auto px-gutter pt-space-lg flex flex-col items-center text-center">
+<!-- Top Tag Badge -->
+<div class="inline-flex items-center gap-2 px-space-md py-1.5 rounded-full bg-secondary-container/20 text-on-secondary-container font-label-md text-label-md shadow-sm mb-space-md backdrop-blur-sm">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+</span>
+        Next-Generation Biomedical Operating System
+      </div>
+<!-- Headline & Subtitle -->
+<h1 class="font-display-hero text-display-hero max-w-4xl tracking-tight text-on-surface font-bold text-center">
+        Accelerate Biomedical Research with Connected Data and Bioinformatics
+      </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mt-space-md leading-relaxed">
+        BioHub brings research projects, clinical data, biological samples, laboratory services, and RNA-seq analysis into one integrated, clinical-grade platform.
+      </p>
+<!-- CTAs -->
+<div class="flex flex-wrap items-center justify-center gap-space-md mt-space-lg">
+<a asp-action="Register" asp-controller="Account" class="inline-flex items-center justify-center gap-2 px-space-lg py-3 rounded-lg font-label-lg text-label-lg bg-primary text-on-primary hover:bg-primary-container transition-all shadow-md hover:shadow-lg">
+          Get Started
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+<a class="inline-flex items-center justify-center px-space-lg py-3 rounded-lg font-label-lg text-label-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-all shadow-sm" href="#platform">
+          Explore Platform
+        </a>
+</div>
+<!-- Institutional Trust Row -->
+<div class="mt-space-lg flex flex-col items-center gap-3">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">
+          Trusted by 140+ research institutions &amp; biotech labs
+        </span>
+<div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-on-surface-variant font-label-md text-label-md">
+<span class="px-space-md py-1 rounded-full bg-surface-container-lowest shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">domain</span>Research Teams
+          </span>
+<span class="px-space-md py-1 rounded-full bg-surface-container-lowest shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">biotech</span>Clinical Studies
+          </span>
+<span class="px-space-md py-1 rounded-full bg-surface-container-lowest shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">school</span>Biotech Labs
+          </span>
+<span class="px-space-md py-1 rounded-full bg-surface-container-lowest shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-tertiary text-[16px]">medical_services</span>Bioinformatics
+          </span>
+<span class="px-space-md py-1 rounded-full bg-surface-container-lowest shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">local_hospital</span>Sample Management
+          </span>
+</div>
+</div>
+<!-- Central Hero Visual Stage -->
+<div class="relative w-full max-w-6xl mt-space-xl">
+<!-- Glow Backdrop -->
+<div class="absolute -inset-4 bg-gradient-to-r from-primary-fixed/30 via-secondary-fixed/20 to-primary-container/20 rounded-3xl blur-2xl -z-10"></div>
+<!-- Center Stage Card -->
+<div class="relative rounded-2xl bg-surface-container-lowest overflow-hidden shadow-xl">
+<!-- Ambient Visualization Showcase -->
+<div class="relative w-full h-[340px] sm:h-[440px] md:h-[500px] overflow-hidden bg-surface-container-highest">
+<img alt="Genomic Sequence Analysis &amp; Bioinformatics Visualization" class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD48vgDOtcxC89ETbtDDZ5b68H__4Ao96M77HJgrIgEEGsZ8_HxSqQq05I_j_ef3PWkYjj91OTI7soahQ1kikjrfKArkOu9Rys5qs0xxUbuXmokEuFZaGUiiYSm91yJ-HAEmm2XQfN5faykTMCpG3OdWWSEvMVQL-2qTTSmeoxays2RxNtFuuS45Ex5AtqZm2-zffCQ1Og6FZhjJbyflbTo6BxY3_qeIxxV26suR-oCBjTwSW4abTcCUQ"/>
+<!-- Technical Overlay HUD Elements -->
+<div class="absolute top-4 left-4 sm:top-6 sm:left-6 flex items-center gap-3 bg-surface-container-lowest/80 backdrop-blur-md px-3 py-2 rounded-xl shadow-md">
+<span class="material-symbols-outlined text-primary text-[20px]">hub</span>
+<div class="text-left">
+<p class="font-label-sm text-label-sm text-outline uppercase font-semibold">Pipelines Online</p>
+<p class="font-label-md text-label-md text-on-surface font-bold">BioHub Analysis Workspace</p>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 hidden sm:flex items-center gap-4 bg-surface-container-lowest/85 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-md">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-container animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Dataset Validation Ready</span>
+</div>
+<div class="h-4 w-px bg-outline-variant"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">R Analysis Ready</span>
+</div>
+</div>
+</div>
+<!-- Floating Telemetry Card 1: FASTQ Ingestion -->
+<div class="lg:absolute -bottom-8 -left-6 w-full lg:w-80 mt-4 lg:mt-0 p-space-md rounded-xl bg-surface-container-lowest shadow-xl text-left transform hover:-translate-y-1 transition-transform">
+<div class="flex items-center justify-between pb-2">
+<span class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">dns</span>
+              Counts Matrix Upload
+            </span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">Validated</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Structured RNA-seq input validation</p>
+<div class="mt-3 flex items-center justify-between pt-2 bg-surface-container-low px-3 py-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-outline">Analyzed Today</span>
+<span class="font-label-md text-label-md font-bold text-primary">Ready for Analysis</span>
+</div>
+</div>
+<!-- Floating Telemetry Card 2: Sample Records Sync -->
+<div class="lg:absolute -top-6 -right-4 w-full lg:w-72 mt-4 lg:mt-0 p-space-md rounded-xl bg-surface-container-lowest shadow-xl text-left transform hover:-translate-y-1 transition-transform">
+<div class="flex items-center justify-between pb-1">
+<span class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[18px]">ac_unit</span>
+              Sample Records
+            </span>
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+</div>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">842</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Samples tracked</span>
+</div>
+<div class="mt-2 text-xs font-label-sm text-secondary flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]">thermostat</span>
+            Storage metadata available
+          </div>
+</div>
+<!-- Floating Telemetry Card 3: Cohort Enrollment -->
+<div class="lg:absolute -bottom-8 right-12 w-full lg:w-72 mt-4 lg:mt-0 p-space-md rounded-xl bg-surface-container-lowest shadow-xl text-left transform hover:-translate-y-1 transition-transform hidden sm:block">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">group</span>
+</div>
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">326 Subjects</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Across active research projects</p>
+</div>
+</div>
+<!-- Mini Progress Bar -->
+<div class="mt-3 w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 78%"></div>
+</div>
+<div class="flex justify-between mt-1 text-xs text-outline font-label-sm">
+<span>Enrolled target</span>
+<span>In Progress</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CORE PLATFORM SECTION -->
+<section class="w-full py-space-xl bg-surface-container-low/50" id="platform"><div class="max-w-7xl mx-auto px-gutter"><div class="flex flex-col items-center text-center max-w-3xl mx-auto mb-space-xl"><span class="px-space-sm py-1 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm uppercase tracking-wider font-semibold shadow-sm">Unified Architecture</span><h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-sm tracking-tight">Core Platform Capabilities</h2><p class="font-body-lg text-body-lg text-on-surface-variant mt-space-xs leading-relaxed">Engineered specifically for biotechnology companies, translational laboratories, clinical trial teams, and bioinformatics analysts.</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg"><div class="flex flex-col bg-surface-container-lowest rounded-2xl p-space-lg shadow-md hover:shadow-lg transition-all relative overflow-hidden group border border-primary-fixed/40"><div class="flex items-center justify-between mb-space-md"><div class="w-12 h-12 rounded-xl bg-primary-fixed/70 text-primary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-[28px]">clinical_notes</span></div><span class="px-2.5 py-1 rounded-full bg-primary-fixed/30 text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">Research Workflow</span></div><h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Clinical Research Management</h3><p class="font-body-md text-body-md text-on-surface-variant mt-2 mb-space-md leading-relaxed">Manage research protocols, subjects, longitudinal clinical milestones, and regulatory study data in one compliant operational space.</p><ul class="flex flex-col gap-3 mb-space-lg font-body-md text-body-md text-on-surface"><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span><span>Cohort stratification &amp; protocol milestone management</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span><span>Multi-center trial monitoring &amp; site synchronization</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span><span>RECIST 1.1 clinical response logging &amp; adverse events</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span><span>GxP &amp; Audit-ready compliant audit trail logging</span></li></ul><div class="mt-auto pt-space-md bg-surface-container-low/80 -mx-space-lg -mb-space-lg px-space-lg pb-space-md flex items-center justify-between border-t border-outline-variant/20"><div><span class="font-label-sm text-label-sm text-outline block font-medium">Active Studies</span><span class="font-label-lg text-label-lg text-on-surface font-bold">24 Multi-Center</span></div><div class="text-right"><span class="font-label-sm text-label-sm text-outline block font-medium">Cohort Pool</span><span class="font-label-lg text-label-lg text-primary font-bold">326 Subjects</span></div></div></div><div class="flex flex-col bg-surface-container-lowest rounded-2xl p-space-lg shadow-md hover:shadow-lg transition-all relative overflow-hidden group border border-secondary-fixed/40"><div class="flex items-center justify-between mb-space-md"><div class="w-12 h-12 rounded-xl bg-secondary-fixed/70 text-secondary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-[28px]">qr_code_2</span></div><span class="px-2.5 py-1 rounded-full bg-secondary-fixed/30 text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">Sample Tracking</span></div><h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Sample Management</h3><p class="font-body-md text-body-md text-on-surface-variant mt-2 mb-space-md leading-relaxed">Track biological specimens, sample metadata, and chain-of-custody storage records with cold-chain precision telemetry.</p><ul class="flex flex-col gap-3 mb-space-lg font-body-md text-body-md text-on-surface"><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-secondary text-[20px] shrink-0">check_circle</span><span>Structured sample code, type, storage, and status records</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-secondary text-[20px] shrink-0">check_circle</span><span>2D DataMatrix high-speed scanning &amp; barcode indexing</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-secondary text-[20px] shrink-0">check_circle</span><span>Storage temperature and location recording</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-secondary text-[20px] shrink-0">check_circle</span><span>Sample status, notes, and storage history-ready design</span></li></ul><div class="mt-auto pt-space-md bg-surface-container-low/80 -mx-space-lg -mb-space-lg px-space-lg pb-space-md flex items-center justify-between border-t border-outline-variant/20"><div><span class="font-label-sm text-label-sm text-outline block font-medium">Specimens</span><span class="font-label-lg text-label-lg text-on-surface font-bold">842 Aliquots</span></div><div class="text-right"><span class="font-label-sm text-label-sm text-outline block font-medium">Telemetry Status</span><span class="font-label-lg text-label-lg text-secondary font-bold">-80°C / -196°C LN2</span></div></div></div><div class="flex flex-col bg-surface-container-lowest rounded-2xl p-space-lg shadow-md hover:shadow-lg transition-all relative overflow-hidden group border border-tertiary-fixed/50"><div class="flex items-center justify-between mb-space-md"><div class="w-12 h-12 rounded-xl bg-tertiary-fixed/70 text-tertiary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-[28px]">insights</span></div><span class="px-2.5 py-1 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">RNA-seq Workflow</span></div><h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">RNA-seq Analysis</h3><p class="font-body-md text-body-md text-on-surface-variant mt-2 mb-space-md leading-relaxed">Upload sequencing datasets, trigger containerized workflows, and explore publication-ready analysis figures in real time.</p><ul class="flex flex-col gap-3 mb-space-lg font-body-md text-body-md text-on-surface"><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-tertiary text-[20px] shrink-0">check_circle</span><span>Reproducible Nextflow &amp; Slurm HPC cluster execution</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-tertiary text-[20px] shrink-0">check_circle</span><span>Differential gene expression via DESeq2 &amp; edgeR</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-tertiary text-[20px] shrink-0">check_circle</span><span>Interactive volcano plots, PCA clusters &amp; heatmaps</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-tertiary text-[20px] shrink-0">check_circle</span><span>Counts matrix upload and dataset management</span></li></ul><div class="mt-auto pt-space-md bg-surface-container-low/80 -mx-space-lg -mb-space-lg px-space-lg pb-space-md flex items-center justify-between border-t border-outline-variant/20"><div><span class="font-label-sm text-label-sm text-outline block font-medium">Pipeline Core</span><span class="font-label-lg text-label-lg text-on-surface font-bold">nf-core / DESeq2</span></div><div class="text-right"><span class="font-label-sm text-label-sm text-outline block font-medium">Data Outputs</span><span class="font-label-lg text-label-lg text-tertiary font-bold">Live Volcano Plots</span></div></div></div></div></div></section>
+<!-- LABORATORY SERVICES SECTION -->
+<section class="w-full py-space-xl bg-surface" id="laboratory-services">
+<div class="max-w-7xl mx-auto px-gutter">
+<!-- Section Header -->
+<div class="flex flex-col items-center text-center max-w-3xl mx-auto mb-space-xl">
+<span class="px-space-sm py-0.5 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed-variant font-label-sm text-label-sm uppercase tracking-wider font-semibold">
+          Certified Wet-Lab &amp; Dry-Lab Support
+        </span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-sm">
+          End-to-End Laboratory Services
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+          Accelerate experimental turnaround with laboratory services, sequencing support, and custom bioinformatics.
+        </p>
+</div>
+<!-- 5 Services Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-space-md"><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex flex-col border border-outline-variant/20"><div class="w-10 h-10 rounded-lg bg-surface-container-high text-primary flex items-center justify-center mb-space-sm"><span class="material-symbols-outlined text-[22px]">science</span></div><h4 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-1">RNA Extraction</h4><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-4">High-efficiency isolation from whole blood, tissue biopsies, and FFPE specimens with automated RIN quality verification.</p><div class="mt-auto flex items-center gap-1.5 text-xs text-primary font-label-sm font-semibold"><span class="material-symbols-outlined text-[16px]">verified</span> RIN &gt; 8.0 Target</div></div><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex flex-col border border-outline-variant/20"><div class="w-10 h-10 rounded-lg bg-surface-container-high text-secondary flex items-center justify-center mb-space-sm"><span class="material-symbols-outlined text-[22px]">colorize</span></div><h4 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-1">DNA Extraction</h4><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-4">High molecular weight gDNA purification optimized for long-read Oxford Nanopore and short-read Illumina assays.</p><div class="mt-auto flex items-center gap-1.5 text-xs text-secondary font-label-sm font-semibold"><span class="material-symbols-outlined text-[16px]">verified</span> DNA Quality Support</div></div><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex flex-col border border-outline-variant/20"><div class="w-10 h-10 rounded-lg bg-surface-container-high text-primary-container flex items-center justify-center mb-space-sm"><span class="material-symbols-outlined text-[22px]">strikethrough_s</span></div><h4 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-1">RNA-seq</h4><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-4">Comprehensive transcriptome sequencing including polyA selection, total RNA ribo-depletion, and 10x single-cell assays.</p><div class="mt-auto flex items-center gap-1.5 text-xs text-primary-container font-label-sm font-semibold"><span class="material-symbols-outlined text-[16px]">verified</span> NovaSeq 6000 &amp; X Plus</div></div><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex flex-col border border-outline-variant/20"><div class="w-10 h-10 rounded-lg bg-surface-container-high text-tertiary flex items-center justify-center mb-space-sm"><span class="material-symbols-outlined text-[22px]">show_chart</span></div><h4 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-1">qPCR</h4><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-4">High-throughput quantitative real-time PCR validation for targeted multi-gene panels and therapeutic biomarker assays.</p><div class="mt-auto flex items-center gap-1.5 text-xs text-tertiary font-label-sm font-semibold"><span class="material-symbols-outlined text-[16px]">verified</span> qPCR Service</div></div><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex flex-col border border-outline-variant/20"><div class="w-10 h-10 rounded-lg bg-surface-container-high text-on-primary-fixed-variant flex items-center justify-center mb-space-sm"><span class="material-symbols-outlined text-[22px]">memory</span></div><h4 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-1">Bioinformatics</h4><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-4">Custom pipeline configuration, somatic variant calling, GSEA pathway enrichment, and publication-ready figures.</p><div class="mt-auto flex items-center gap-1.5 text-xs text-on-primary-fixed-variant font-label-sm font-semibold"><span class="material-symbols-outlined text-[16px]">verified</span> Bioinformatics Support</div></div></div>
+<!-- Laboratory Accreditation Bar -->
+<div class="mt-space-lg p-space-md rounded-2xl bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex flex-wrap items-center gap-4 text-on-surface-variant font-label-sm text-label-sm">
+<span class="font-semibold text-on-surface">Platform Capabilities:</span>
+<span class="px-2.5 py-1 rounded bg-surface-container-lowest shadow-sm font-medium">Research Management</span>
+<span class="px-2.5 py-1 rounded bg-surface-container-lowest shadow-sm font-medium">Sample Tracking</span>
+<span class="px-2.5 py-1 rounded bg-surface-container-lowest shadow-sm font-medium">RNA-seq Workflow</span>
+<span class="px-2.5 py-1 rounded bg-surface-container-lowest shadow-sm font-medium">Bioinformatics Analysis</span>
+</div>
+<a class="inline-flex items-center gap-2 px-space-md py-2 rounded-lg font-label-lg text-label-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors shadow-sm shrink-0" href="#">
+          Explore Laboratory Services
+          <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+</div>
+</section>
+<!-- WHY BIOHUB SECTION -->
+<section class="w-full py-space-xl bg-surface-container-low/40" id="about">
+<div class="max-w-7xl mx-auto px-gutter">
+<!-- Section Header -->
+<div class="flex flex-col items-center text-center max-w-3xl mx-auto mb-space-xl">
+<span class="px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm uppercase tracking-wider font-semibold">
+          Enterprise Precision
+        </span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-sm">
+          Why Leading Research Teams Choose BioHub
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+          Eliminating data silos and manual handoffs between laboratory benches, compute clusters, and clinical trial managers.
+        </p>
+</div>
+<!-- 4 Pillars Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Card 1 -->
+<div class="flex gap-space-md p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">database</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Centralized Research Data</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs leading-relaxed">
+              Unified repository combining patient clinical phenotypes, longitudinal biospecimens, and deep molecular data into a secure, searchable source of truth.
+            </p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex gap-space-md p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">inventory_2</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Streamlined Sample Management</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs leading-relaxed">
+              Complete chain of custody tracking from initial bedside phlebotomy to automated cryo-freezer slotting, tracking every freeze-thaw and aliquot shipment.
+            </p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex gap-space-md p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">network_node</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Integrated Bioinformatics Analysis</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs leading-relaxed">
+              Direct connection between sequencing pipelines and clinical metadata. Run containerized workflows without manual FTP transfers or disjointed scripts.
+            </p>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="flex gap-space-md p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">schema</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Clear Research Workflow</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs leading-relaxed">
+              End-to-end transparency across study milestones, sample dispatches, computational runs, and principal investigator sign-offs.
+            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- WORKFLOW SECTION -->
+<section class="w-full py-space-xl bg-surface"><div class="max-w-7xl mx-auto px-gutter" id="workflow"><div class="flex flex-col items-center text-center max-w-3xl mx-auto mb-space-xl"><span class="px-space-sm py-1 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm uppercase tracking-wider font-semibold shadow-sm">Step-by-Step Execution</span><h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-sm tracking-tight">A Seamless End-to-End Biomedical Workflow</h2><p class="font-body-lg text-body-lg text-on-surface-variant mt-space-xs leading-relaxed">From initial protocol launch to biological discovery in six interconnected, audit-logged stages.</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-space-md relative"><div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md relative group hover:bg-surface-container-low transition-all border border-outline-variant/20"><div class="flex items-center justify-between mb-3"><span class="w-8 h-8 rounded-full bg-primary text-on-primary font-bold text-xs flex items-center justify-center shadow-sm">01</span><span class="material-symbols-outlined text-primary text-[20px]">folder_special</span></div><h4 class="font-label-lg text-label-lg font-bold text-on-surface">Create Project</h4><p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">Protocol definition, IRB approval logging, and multi-team role assignment.</p><div class="hidden xl:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-outline-variant"><span class="material-symbols-outlined text-[18px]">arrow_forward</span></div></div><div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md relative group hover:bg-surface-container-low transition-all border border-outline-variant/20"><div class="flex items-center justify-between mb-3"><span class="w-8 h-8 rounded-full bg-primary text-on-primary font-bold text-xs flex items-center justify-center shadow-sm">02</span><span class="material-symbols-outlined text-primary text-[20px]">person_search</span></div><h4 class="font-label-lg text-label-lg font-bold text-on-surface">Manage Subjects</h4><p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">Manage de-identified subject codes and structured clinical research data.</p><div class="hidden xl:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-outline-variant"><span class="material-symbols-outlined text-[18px]">arrow_forward</span></div></div><div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md relative group hover:bg-surface-container-low transition-all border border-outline-variant/20"><div class="flex items-center justify-between mb-3"><span class="w-8 h-8 rounded-full bg-secondary text-on-secondary font-bold text-xs flex items-center justify-center shadow-sm">03</span><span class="material-symbols-outlined text-secondary text-[20px]">biotech</span></div><h4 class="font-label-lg text-label-lg font-bold text-on-surface">Track Samples</h4><p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">Track sample type, collection data, storage temperature, and location.</p><div class="hidden xl:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-outline-variant"><span class="material-symbols-outlined text-[18px]">arrow_forward</span></div></div><div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md relative group hover:bg-surface-container-low transition-all border border-outline-variant/20"><div class="flex items-center justify-between mb-3"><span class="w-8 h-8 rounded-full bg-secondary text-on-secondary font-bold text-xs flex items-center justify-center shadow-sm">04</span><span class="material-symbols-outlined text-secondary text-[20px]">cloud_upload</span></div><h4 class="font-label-lg text-label-lg font-bold text-on-surface">Upload RNA-seq</h4><p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">Upload counts matrices and validate dataset structure before analysis.</p><div class="hidden xl:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-outline-variant"><span class="material-symbols-outlined text-[18px]">arrow_forward</span></div></div><div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md relative group hover:bg-surface-container-low transition-all border border-outline-variant/20"><div class="flex items-center justify-between mb-3"><span class="w-8 h-8 rounded-full bg-tertiary text-on-tertiary font-bold text-xs flex items-center justify-center shadow-sm">05</span><span class="material-symbols-outlined text-tertiary text-[20px]">play_circle</span></div><h4 class="font-label-lg text-label-lg font-bold text-on-surface">Run Analysis</h4><p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">Run R-based differential expression analysis, PCA, heatmaps, and volcano plots.</p><div class="hidden xl:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-outline-variant"><span class="material-symbols-outlined text-[18px]">arrow_forward</span></div></div><div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md relative group hover:bg-surface-container-low transition-all border border-outline-variant/20"><div class="flex items-center justify-between mb-3"><span class="w-8 h-8 rounded-full bg-tertiary text-on-tertiary font-bold text-xs flex items-center justify-center shadow-sm">06</span><span class="material-symbols-outlined text-tertiary text-[20px]">analytics</span></div><h4 class="font-label-lg text-label-lg font-bold text-on-surface">Review Results</h4><p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">Review PCA, volcano plots, heatmaps, enrichment results, and downloadable tables.</p></div></div></div></section>
+<!-- FINAL CALL TO ACTION SECTION -->
+<section class="w-full py-space-xl bg-surface-container-low/60">
+<div class="max-w-7xl mx-auto px-gutter">
+<div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-container-low via-surface-container-lowest to-secondary-container/20 p-space-lg sm:p-space-xl shadow-lg text-center flex flex-col items-center">
+<span class="px-space-md py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold uppercase tracking-wider mb-space-sm">
+          Ready for Deployment
+        </span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface max-w-2xl tracking-tight">
+          Bring Your Research Workflow Together
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-space-sm mb-space-lg">
+          Bring research projects, samples, clinical data, and RNA-seq analysis into one connected BioHub workflow.
+        </p>
+<div class="flex flex-wrap items-center justify-center gap-space-md">
+<a asp-action="Register" asp-controller="Account" class="inline-flex items-center justify-center gap-2 px-space-lg py-3 rounded-lg font-label-lg text-label-lg bg-primary text-on-primary hover:bg-primary-container transition-all shadow-md hover:shadow-lg">
+            Get Started
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+<a class="inline-flex items-center justify-center px-space-lg py-3 rounded-lg font-label-lg text-label-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-all shadow-sm" href="#platform">
+            Learn More
+          </a>
+</div>
+<!-- Compliance & Trust Badges -->
+<div class="mt-space-xl flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-on-surface-variant font-label-sm text-label-sm">
+<span class="inline-flex items-center gap-1.5 font-medium">
+<span class="material-symbols-outlined text-secondary text-[18px]">lock</span>
+            Privacy-conscious Design
+          </span>
+<span class="inline-flex items-center gap-1.5 font-medium">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+            Audit Trail Ready
+          </span>
+<span class="inline-flex items-center gap-1.5 font-medium">
+<span class="material-symbols-outlined text-tertiary text-[18px]">shield</span>
+            Role-based Access
+          </span>
+<span class="inline-flex items-center gap-1.5 font-medium">
+<span class="material-symbols-outlined text-secondary text-[18px]">privacy_tip</span>
+            Data Governance Ready
+          </span>
+</div>
+</div>
+</div>
+</section>
+</div></main>

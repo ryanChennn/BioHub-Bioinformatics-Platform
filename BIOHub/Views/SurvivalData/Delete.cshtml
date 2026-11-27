@@ -1,0 +1,66 @@
+﻿@model BIOHub.Models.SurvivalData
+@{
+    ViewData["Title"] = "刪除存活分析";
+}
+
+<h2>刪除存活分析</h2>
+
+<h5>受試者編號: @ViewBag.SubjectCode</h5>
+
+<hr />
+
+<div class="alert alert-danger">
+    <strong>注意!!</strong>
+    確定要刪除此筆 OS / PFS 存活分析資料嗎？
+    刪除後無法復原。
+</div>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<div class="row">
+    <dl>
+        <dt class="col-sm-4">OS(Month)</dt>
+        <dd class="col-sm-8">@(Model.OS_Month?.ToString("0.00") ?? "未填寫")</dd>
+
+        <dt class="col-sm-4">OS Status</dt>
+        <dd class="col-sm-8">
+            @(Model.OS_Status == null ? "未填寫" : Model.OS_Status == 1
+                        ? "Dead"
+                        : "Alive")
+        </dd>
+
+        <dt class="col-sm-4">PFS(Month)</dt>
+        <dd class="col-sm-8">@(Model.PFS_Month?.ToString("0.00") ?? "未填寫")</dd>
+
+        <dt class="col-sm-4">PFS Status</dt>
+        <dd class="col-sm-8">
+            @(Model.PFS_Status == null ? "未填寫" : Model.PFS_Status == 1
+                            ? "事件發生"
+                            : "無")
+        </dd>
+
+        <dt class="col-sm-4">最後追蹤日期</dt>
+        <dd class="col-sm-8">@(Model.LastFollowUpDate?.ToString("yyyy-MM-dd") ?? "未填寫")</dd>
+
+</dl>
+</div>
+
+<form asp-controller="SurvivalData"
+asp-action="Delete"
+asp-route-id="@Model.SurvivalDataID"
+method="post">
+<button type="submit" class="btn btn-danger">確認刪除</button>
+
+<a asp-controller="SurvivalData"
+asp-action="Index"
+asp-route-subjectId =" @ViewBag.SubjectId"
+class="btn btn-secondary">取消</a>
+
+</form>
+
+
+
+
+
+
+

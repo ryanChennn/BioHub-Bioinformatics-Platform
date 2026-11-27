@@ -1,0 +1,79 @@
+﻿@model BIOHub.Models.SurvivalData
+@{
+    ViewData["Title"] = "受試者存活分析資料";
+}
+
+<h2>受試者存活分析資料</h2>
+
+<h5>受試者: @ViewBag.SubjectCode</h5>
+
+<hr />
+
+@if(Model == null)
+{
+    <div class="alert alert-info">
+        此受試者目前尚未建立 OS / PFS 存活分析資料。
+    </div>
+
+    <a asp-controller="SurvivalData"
+    asp-action="Create"
+    asp-route-subjectId = "@ViewBag.SubjectId"
+    class="btn btn-primary">
+        新增存活資料
+    </a>
+}
+else
+{
+    <div class="card">
+        
+        <div class="card-body">
+            <h5 class="card-title">存活分析摘要</h5>
+
+            <dl class="row">
+                <dt class="col-sm-4">OS(Month)</dt>
+                <dd class="col-sm-8">@(Model.OS_Month?.ToString("0.00") ?? "未填寫")</dd>
+
+                <dt class="col-sm-4">OS Status</dt>
+                <dd class="col-sm-8">
+                    @(Model.OS_Status == null ? "未填寫" : Model.OS_Status == 1
+                                ? "Dead"
+                                : "Alive")</dd>
+
+                <dt class="col-sm-4">PFS(Month)</dt>
+                <dd class="col-sm-8">@(Model.PFS_Month?.ToString("0.00") ?? "未填寫")</dd>
+
+                <dt class="col-sm-4">PFS Status</dt>
+                <dd class="col-sm-8">
+                    @(Model.PFS_Status == null ? "未填寫" : Model.PFS_Status == 1
+                                    ? "事件發生"
+                                    : "無")
+                </dd>
+
+                <dt class="col-sm-4">最後追蹤日期</dt>
+                <dd class="col-sm-8">@(Model.LastFollowUpDate?.ToString("yyyy-MM-dd") ?? "未填寫")</dd>
+                    
+            </dl>
+            
+            <!-- 只有 Model 不為 null 才顯示操作按鈕 -->
+            <a asp-controller="SurvivalData"
+               asp-action="Edit"
+               asp-route-id="@Model.SurvivalDataID"
+               class="btn btn-outline-warning mt-3">編輯存活資料</a>
+
+            <a asp-controller="SurvivalData"
+               asp-action="Delete"
+               asp-route-id="@Model.SurvivalDataID"
+               class="btn btn-outline-danger mt-3">刪除存活資料</a>
+        </div>
+        
+    </div>
+}
+
+<a asp-controller="Subjects"
+asp-action="Index"
+asp-route-researchProjectId ="@ViewBag.ResearchProjectId"
+class="btn btn-secondary mt-3">返回受試者列表</a>
+
+    
+
+    

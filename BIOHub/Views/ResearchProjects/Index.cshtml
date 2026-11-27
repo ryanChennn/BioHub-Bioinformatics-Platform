@@ -1,0 +1,106 @@
+@model IEnumerable<BIOHub.Models.ResearchProjects>
+@{
+    ViewData["Title"] = "研究計畫管理";
+    
+    var projects = Model?.ToList() ?? new List<BIOHub.Models.ResearchProjects>();
+    var total = projects.Count;
+    var active = projects.Count(p => string.Equals(p.ProjectStatus, "Active", StringComparison.OrdinalIgnoreCase));
+    var completed = projects.Count(p => string.Equals(p.ProjectStatus, "Complete", StringComparison.OrdinalIgnoreCase) || string.Equals(p.ProjectStatus, "Completed", StringComparison.OrdinalIgnoreCase));
+}
+
+<div class="bh-research container-fluid py-3 py-lg-4">
+    <div class="bh-research-header">
+        <div>
+            <div class="bh-research-eyebrow"><i class="bi bi-folder2-open me-2"></i>RESEARCH MANAGEMENT</div>
+            <h1 class="bh-research-title">研究計畫管理</h1>
+            <p class="bh-research-subtitle mb-0">管理研究計畫資訊，並進入各計畫的受試者資料。</p>
+        </div>
+        <a asp-controller="ResearchProjects" asp-action="Create" class="btn btn-primary bh-research-primary">
+            <i class="bi bi-plus-lg me-1"></i>新增研究計畫
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-4">
+            <div class="bh-research-metric"><div class="bh-research-metric-icon blue"><i class="bi bi-folder2-open"></i></div><div><div class="bh-research-metric-label">計畫總數</div><div class="bh-research-metric-value">@total</div></div></div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="bh-research-metric"><div class="bh-research-metric-icon teal"><i class="bi bi-activity"></i></div><div><div class="bh-research-metric-label">進行中</div><div class="bh-research-metric-value">@active</div></div></div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="bh-research-metric"><div class="bh-research-metric-icon purple"><i class="bi bi-check2-circle"></i></div><div><div class="bh-research-metric-label">已結束</div><div class="bh-research-metric-value">@completed</div></div></div>
+        </div>
+    </div>
+
+    <section class="bh-research-card">
+        <div class="bh-research-card-header bh-research-toolbar">
+            <div><h2 class="bh-research-section-title">研究計畫列表</h2><p class="bh-research-subtitle mb-0">目前帳號可存取的研究計畫</p></div>
+            <div class="bh-research-search"><i class="bi bi-search"></i><input id="projectKeyword" type="search" class="form-control" aria-label="搜尋研究計畫" placeholder="搜尋編號、名稱、主持人或機構" autocomplete="off" /></div>
+        </div>
+        <div class="table-responsive">
+            <table class="table bh-research-table align-middle mb-0" id="projectTable">
+                <thead><tr><th>計畫編號</th><th>計畫名稱</th><th>計畫主持人</th><th>研究機構</th><th>計畫狀態</th><th>開始日期</th><th>結束日期</th><th>申請人</th><th class="text-end">操作</th></tr></thead>
+                <tbody>
+                @if (projects.Count == 0)
+                {
+                    <tr><td colspan="9" class="bh-research-empty"><i class="bi bi-inbox fs-2 d-block mb-2"></i>目前尚無研究計畫，請使用右上角按鈕新增。</td></tr>
+                }
+                else
+                {
+                    foreach (var project in projects)
+                    {
+                        var label = project.ProjectStatus switch { "Planning" => "申請中", "Active" => "進行中", "Complete" => "已結束", "Completed" => "已結束", "Cancelled" => "已取消", _ => project.ProjectStatus ?? "未設定" };
+                        var badgeClass = project.ProjectStatus switch { "Active" => "active", "Complete" or "Completed" => "complete", "Cancelled" => "cancelled", _ => "planning" };
+                        <tr class="bh-research-data-row">
+                            <td class="bh-research-code">@project.ProjectCode</td>
+                            <td class="bh-research-name">@project.ProjectName</td>
+                            <td>@(project.PrincipalInvestigator ?? "—")</td>
+                            <td>@(project.Institution ?? "—")</td>
+                            <td><span class="bh-research-tag @badgeClass">@label</span></td>
+                            <td class="text-nowrap">@(project.StartDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                            <td class="text-nowrap">@(project.EndDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                            <td>@project.CreatedBy</td>
+                            <td>
+                                <div class="bh-research-actions">
+                                    <a asp-controller="ResearchProjects" asp-action="Details" asp-route-id="@project.ResearchProjectsID" class="btn btn-sm btn-outline-primary">詳細</a>
+                                    <a asp-controller="ResearchProjects" asp-action="Edit" asp-route-id="@project.ResearchProjectsID" class="btn btn-sm btn-outline-secondary">編輯</a>
+                                    <a asp-controller="Subjects" asp-action="Index" asp-route-ResearchProjectId="@project.ResearchProjectsID" class="btn btn-sm btn-outline-primary text-nowrap">受試者</a>
+                                    <a asp-controller="ResearchProjects" asp-action="Delete" asp-route-id="@project.ResearchProjectsID" class="btn btn-sm btn-outline-danger">刪除</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        @if (projects.Count > 0)
+        {
+            <div class="bh-research-card-footer"><span id="projectVisibleCount">顯示 @total 筆，共 @total 筆</span></div>
+            <div id="projectNoMatches" class="bh-research-empty d-none" role="status">沒有符合搜尋條件的研究計畫。</div>
+        }
+    </section>
+</div>
+
+@section Scripts {
+<script>
+(() => {
+    const input = document.getElementById('projectKeyword');
+    const rows = [...document.querySelectorAll('#projectTable .bh-research-data-row')];
+    const countLabel = document.getElementById('projectVisibleCount');
+    const empty = document.getElementById('projectNoMatches');
+    if (!input || !rows.length) return;
+    input.addEventListener('input', () => {
+        const keyword = input.value.trim().toLocaleLowerCase('zh-TW');
+        let visible = 0;
+        rows.forEach(row => {
+            const matches = row.textContent.toLocaleLowerCase('zh-TW').includes(keyword);
+            row.classList.toggle('d-none', !matches);
+            if (matches) visible++;
+        });
+        if (countLabel) countLabel.textContent = `顯示 ${visible} 筆，共 ${rows.length} 筆`;
+        if (empty) empty.classList.toggle('d-none', visible !== 0);
+    });
+})();
+</script>
+}

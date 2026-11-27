@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BIOHub.Models.ClinicalData>
+@{
+
+    ViewData["Title"] = "臨床資料管理";
+
+}
+
+<h2>臨床資料管理</h2>
+
+<h5>受試者資料: @ViewBag.SubjectCode</h5>
+
+<a asp-controller="Subjects"
+asp-action="Index"
+asp-route-researchProjectId = "@ViewBag.ResearchProjectID"
+class="btn btn-secondary mb-3">返回受試者列表</a>
+
+
+<a asp-controller="ClinicalData"
+asp-action="Create"
+asp-route-subjectId = "@ViewBag.SubjectId"
+class="btn btn-primary mb-3">新增臨床資料</a>
+<table class="table table-hover">
+    <thead class="table table-light">
+        <tr>
+            <th>臨床診斷</th>
+            <th>疾病分期</th>
+            <th>治療方式</th>
+            <th>治療反應</th>
+            <th>建立時間</th>
+            <th>詳細資訊</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model){
+            <tr>
+                <td>@item.Diagnosis</td>
+                <td>@item.Stage</td>
+                <td>@item.Treatments</td>
+                <td>@item.Responses</td>
+                <td>@item.CreateAt.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <a asp-controller="ClinicalData"
+                    asp-action="Details"
+                    asp-route-id = "@item.ClinicalDataID"
+                    class="btn btn-outline-info btn-sm">
+                        詳細資料
+                    </a>
+                    <a asp-controller="ClinicalData"
+                    asp-action="Edit"
+                    asp-route-id ="@item.ClinicalDataID"
+                    class="btn btn-outline-warning btn-sm">
+                    編輯
+                    </a>
+                    <a asp-controller="ClinicalData"
+                    asp-action="Delete"
+                    asp-route-id="@item.ClinicalDataID"
+                    class="btn btn-outline-danger btn-sm">
+                        刪除
+                    </a>
+                </td>
+            </tr>
+        }
+        
+    </tbody>
+</table>

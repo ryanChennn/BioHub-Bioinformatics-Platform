@@ -1,0 +1,194 @@
+@model BIOHub.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "登入 BioHub";
+    // 登入頁獨立使用與 Vue 首頁相近的設計，避免舊 _PublicLayout 的外部 Logo 圖片失效。
+    // 只影響此頁，不變更 AccountController、Cookie Authentication 或其他 Views。
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>登入 BioHub | Bioinformatics &amp; Clinical Research</title>
+    <style>
+        :root { --bh-blue:#2167df; --bh-navy:#10294c; --bh-ink:#233956; --bh-muted:#647891; --bh-line:#e1e9f5; --bh-mint:#0f978b; }
+        *,*::before,*::after { box-sizing:border-box; }
+        body { margin:0; min-height:100vh; font-family:'Noto Sans TC','Microsoft JhengHei',system-ui,-apple-system,sans-serif; color:var(--bh-ink); background:#f6f8fe; }
+        a { color:inherit; text-decoration:none; }
+        button,input { font:inherit; }
+        .bh-header { background:rgba(255,255,255,.96); border-bottom:1px solid #e9eef7; }
+        .bh-container { width:min(1180px,calc(100% - 40px)); margin-inline:auto; }
+        .bh-header-inner { min-height:78px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
+        .bh-brand { display:inline-flex; align-items:center; gap:12px; color:var(--bh-navy); }
+        .bh-brand-icon { width:43px; height:43px; display:grid; place-items:center; border-radius:13px; color:#fff; background:linear-gradient(135deg,#255cda,#2798de); box-shadow:0 8px 18px #2563eb24; flex:none; }
+        .bh-brand-icon svg { width:25px; height:25px; }
+        .bh-brand-text { display:flex; flex-direction:column; line-height:1.15; }
+        .bh-brand-text strong { font-size:22px; font-weight:800; letter-spacing:-.6px; }
+        .bh-brand-text small { margin-top:5px; font-size:9px; font-weight:800; letter-spacing:1.8px; color:#7b8ba0; }
+        .bh-nav { display:flex; align-items:center; gap:24px; font-size:14px; font-weight:700; }
+        .bh-nav a:not(.bh-nav-primary) { color:#60728e; }
+        .bh-nav a:hover { color:#1c5eca; }
+        .bh-nav-primary { display:inline-flex; align-items:center; justify-content:center; padding:11px 18px; color:#fff; background:var(--bh-blue); border-radius:11px; box-shadow:0 8px 18px #2064df2a; }
+        .bh-nav-primary:hover { color:#fff!important; background:#1659c8; }
+        .bh-main { position:relative; overflow:hidden; min-height:calc(100vh - 78px); background:linear-gradient(118deg,#f7faff 5%,#e9f1ff 68%,#e5f3f8 100%); }
+        .bh-main::before { content:""; position:absolute; width:560px; height:560px; border-radius:50%; background:radial-gradient(circle,#bed6fc80,transparent 70%); top:-250px; right:-150px; pointer-events:none; }
+        .bh-main::after { content:""; position:absolute; width:520px; height:520px; border-radius:50%; background:radial-gradient(circle,#b6f0e980,transparent 70%); bottom:-310px; left:4%; pointer-events:none; }
+        .bh-grid { position:relative; z-index:1; display:grid; grid-template-columns:1.08fr .92fr; align-items:center; gap:clamp(25px,5vw,75px); padding-block:70px 90px; }
+        .bh-pill { display:inline-flex; align-items:center; gap:10px; padding:9px 15px; border-radius:999px; background:#eaf1ff; border:1px solid #c5d8f6; color:#2a63ba; font-size:11px; letter-spacing:1px; font-weight:800; }
+        .bh-dot { width:8px; height:8px; flex:none; border-radius:50%; background:#23bba9; box-shadow:0 0 0 4px #23bba91a; }
+        .bh-intro h1 { color:#122c52; font-size:clamp(34px,3.9vw,55px); line-height:1.35; font-weight:800; letter-spacing:-1.2px; margin:25px 0 18px; }
+        .bh-intro h1 span { color:#2267d9; }
+        .bh-lead { max-width:540px; color:#657895; font-size:16px; line-height:1.95; margin:0 0 30px; }
+        .bh-flow { background:#ffffffed; border:1px solid #fff; border-radius:22px; padding:29px; box-shadow:0 28px 75px #2758aa19; }
+        .bh-flow-head { display:flex; align-items:center; gap:13px; padding-bottom:22px; margin-bottom:20px; border-bottom:1px solid #e9eef5; }
+        .bh-flow-symbol { display:grid; place-items:center; width:43px; height:43px; flex:none; border-radius:13px; background:#e8f0ff; color:#286ad3; }
+        .bh-flow-head strong { display:block; font-size:15px; color:#17345e; }
+        .bh-flow-head small { display:block; font-size:12px; color:#8492a7; margin-top:5px; }
+        .bh-step { display:flex; align-items:center; gap:13px; }
+        .bh-step-icon { display:grid; place-items:center; width:39px; height:39px; border-radius:12px; font-weight:800; font-size:13px; color:#2467cb; background:#e8f0ff; flex:none; }
+        .bh-step-icon.mint { color:#168b7e; background:#e6f7f1; }
+        .bh-step strong { color:#26405d; display:block; font-size:14px; }
+        .bh-step small { display:block; color:#8291a6; font-size:12px; margin-top:4px; }
+        .bh-step-line { height:22px; border-left:2px solid #d9e6f5; margin:5px 0 5px 19px; }
+        .bh-flow-foot { margin-top:23px; border-radius:12px; background:#f5f8fd; color:#70849d; padding:14px; font-size:12px; line-height:1.7; }
+        .bh-highlight { display:flex; align-items:center; gap:10px; margin-top:22px; color:#55748c; font-size:13px; }
+        .bh-check { color:var(--bh-mint); font-weight:900; }
+        .bh-card { width:100%; background:#fff; border:1px solid #e4ebf7; border-radius:24px; padding:clamp(25px,3.6vw,43px); box-shadow:0 26px 75px #16397018; }
+        .bh-lock { display:grid; place-items:center; width:47px; height:47px; background:#eef4ff; color:#2467cb; border-radius:14px; margin-bottom:20px; }
+        .bh-lock svg { width:23px; height:23px; }
+        .bh-card h2 { font-size:28px; color:#173154; margin:0 0 10px; font-weight:800; }
+        .bh-card-intro { color:#74869d; line-height:1.8; margin:0 0 25px; font-size:14px; }
+        .bh-field { margin-bottom:19px; }
+        .bh-label { display:block; margin-bottom:8px; color:#2b4564; font-size:14px; font-weight:750; }
+        .bh-input { display:block; width:100%; min-height:50px; border:1px solid #d9e4f2; border-radius:12px; background:#f8faff; color:#223a57; padding:12px 14px; outline:none; transition:border .2s,box-shadow .2s,background .2s; }
+        .bh-input:focus { border-color:#3576e4; background:#fff; box-shadow:0 0 0 3px #2167df20; }
+        .bh-input::placeholder { color:#9aabc0; }
+        .bh-password-wrap { position:relative; }
+        .bh-password-wrap .bh-input { padding-right:92px; }
+        .bh-show { position:absolute; right:10px; top:50%; transform:translateY(-50%); border:0; cursor:pointer; border-radius:8px; padding:8px 10px; color:#3868ab; background:transparent; font-size:12px; font-weight:750; }
+        .bh-show:hover { background:#eaf1ff; }
+        .bh-remember { display:flex; align-items:center; gap:9px; cursor:pointer; margin:4px 0 24px; color:#526b87; font-size:13px; }
+        .bh-remember input { accent-color:#2167df; width:17px; height:17px; }
+        .bh-submit { display:flex; align-items:center; justify-content:center; width:100%; gap:8px; border:0; cursor:pointer; padding:15px 18px; border-radius:12px; background:var(--bh-blue); color:white; font-weight:800; font-size:15px; box-shadow:0 10px 22px #2367dd33; }
+        .bh-submit:hover { background:#1555c3; }
+        .bh-submit:disabled { opacity:.62; cursor:wait; }
+        .bh-separator { height:1px; background:#e7edf7; margin:28px 0 20px; }
+        .bh-register { text-align:center; font-size:14px; color:#72849d; }
+        .bh-register a { color:#2167df; font-weight:800; }
+        .bh-register a:hover { text-decoration:underline; }
+        .bh-secure { font-size:12px; color:#8192a7; text-align:center; margin-top:19px; }
+        .bh-error-box { background:#fff0f0; color:#a12438; border:1px solid #f5c6cf; border-radius:12px; padding:13px 15px; margin-bottom:18px; line-height:1.7; font-size:13px; }
+        .bh-error-box ul { margin:5px 0 0; padding-left:20px; }
+        .field-validation-error { display:block; color:#bb2543; font-size:12px; margin-top:7px; }
+        .input-validation-error { border-color:#db5571!important; }
+        .validation-summary-valid { display:none; }
+        .bh-bottom { padding-top:22px; text-align:center; color:#8294aa; font-size:12px; }
+        @@media(max-width:900px) { .bh-grid { grid-template-columns:1fr; gap:30px; padding-block:46px 60px; } .bh-intro { max-width:700px; margin:auto; } .bh-card { max-width:550px; margin-inline:auto; } }
+        @@media(max-width:580px) { .bh-container { width:calc(100% - 30px); } .bh-header-inner { min-height:70px; } .bh-brand-text strong { font-size:20px; } .bh-nav { gap:12px; } .bh-nav a:not(.bh-nav-primary) { display:none; } .bh-nav-primary { padding:10px 13px; font-size:12px; } .bh-intro h1 { font-size:34px; } .bh-lead { font-size:14px; } .bh-flow { padding:20px; } .bh-card { padding:25px 20px; } .bh-card h2 { font-size:25px; } }
+    </style>
+</head>
+<body>
+    <header class="bh-header">
+        <div class="bh-container bh-header-inner">
+            <a asp-controller="Home" asp-action="Index" class="bh-brand" aria-label="返回 BioHub 首頁">
+                <span class="bh-brand-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12h4l2.4-6 4.5 12 2.4-6H21" />
+                    </svg>
+                </span>
+                <span class="bh-brand-text"><strong>BioHub</strong><small>BIOMEDICAL RESEARCH</small></span>
+            </a>
+            <nav class="bh-nav" aria-label="主要導覽">
+                <a asp-controller="Home" asp-action="Index">首頁</a>
+                <a asp-controller="Account" asp-action="Register" class="bh-nav-primary">建立帳號</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="bh-main">
+        <div class="bh-container bh-grid">
+            <section class="bh-intro" aria-labelledby="bhIntroTitle">
+                <div class="bh-pill"><span class="bh-dot" aria-hidden="true"></span>BIOINFORMATICS &amp; CLINICAL RESEARCH</div>
+                <h1 id="bhIntroTitle">讓研究資料管理<br /><span>與 RNA-seq 分析</span><br />更有效率</h1>
+                <p class="bh-lead">BioHub 將研究計畫、受試者與檢體資料管理，結合 R / DESeq2 分析及互動式結果探索，建立清晰的研究工作流程。</p>
+                <div class="bh-flow" aria-label="BioHub 核心流程">
+                    <div class="bh-flow-head">
+                        <span class="bh-flow-symbol" aria-hidden="true">✦</span>
+                        <div><strong>Connected Research Workspace</strong><small>從研究資料管理到生物資訊分析</small></div>
+                    </div>
+                    <div class="bh-step"><span class="bh-step-icon mint">01</span><div><strong>研究計畫與受試者</strong><small>管理研究基本資料與相關紀錄</small></div></div>
+                    <div class="bh-step-line"></div>
+                    <div class="bh-step"><span class="bh-step-icon">02</span><div><strong>Counts Matrix 與 Metadata</strong><small>上傳 RNA-seq 分析所需資料</small></div></div>
+                    <div class="bh-step-line"></div>
+                    <div class="bh-step"><span class="bh-step-icon mint">03</span><div><strong>DESeq2 差異表現分析</strong><small>透過 R 產生 DEG 結果</small></div></div>
+                    <div class="bh-step-line"></div>
+                    <div class="bh-step"><span class="bh-step-icon">04</span><div><strong>互動式 Volcano Plot</strong><small>調整門檻與搜尋基因</small></div></div>
+                    <div class="bh-flow-foot">研究資料管理 × RNA-seq 分析 × 視覺化探索，整合於同一個 BioHub 工作平台。</div>
+                </div>
+                <div class="bh-highlight"><span class="bh-check" aria-hidden="true">✓</span>保留既有 MVC 登入與 Cookie Authentication，不重新建立驗證流程。</div>
+            </section>
+
+            <section aria-labelledby="bhLoginTitle">
+                <div class="bh-card">
+                    <span class="bh-lock" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                    </span>
+                    <h2 id="bhLoginTitle">登入 BioHub</h2>
+                    <p class="bh-card-intro">使用你的 BioHub 帳號登入，繼續管理研究計畫與 RNA-seq 分析工作。</p>
+
+                    <div asp-validation-summary="ModelOnly" class="bh-error-box" role="alert"></div>
+
+                    <form asp-controller="Account" asp-action="Login" method="post" id="biohub-login-form">
+                        @Html.AntiForgeryToken()
+                        <div class="bh-field">
+                            <label asp-for="Username" class="bh-label">帳號</label>
+                            <input asp-for="Username" class="bh-input" autocomplete="username" placeholder="請輸入帳號" />
+                            <span asp-validation-for="Username"></span>
+                        </div>
+                        <div class="bh-field">
+                            <label asp-for="Password" class="bh-label">密碼</label>
+                            <div class="bh-password-wrap">
+                                <input asp-for="Password" type="password" class="bh-input" autocomplete="current-password" placeholder="請輸入密碼" />
+                                <button type="button" id="toggle-password" class="bh-show" aria-label="顯示密碼" aria-pressed="false">顯示</button>
+                            </div>
+                            <span asp-validation-for="Password"></span>
+                        </div>
+                        <label class="bh-remember">
+                            <input asp-for="RememberMe" />
+                            <span>記住我</span>
+                        </label>
+                        <button type="submit" class="bh-submit" id="btn-submit">
+                            <span id="btn-submit-text">登入工作平台</span>
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </form>
+                    <div class="bh-separator"></div>
+                    <div class="bh-register">還沒有帳號？ <a asp-controller="Account" asp-action="Register">立即註冊</a></div>
+                    <p class="bh-secure">帳號密碼由 ASP.NET Core MVC 後端驗證</p>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="bh-bottom bh-container">© @DateTime.Now.Year BioHub · Bioinformatics &amp; Clinical Research Management Platform</footer>
+
+    <script>
+        (() => {
+            const input = document.getElementById('Password');
+            const button = document.getElementById('toggle-password');
+            if (input && button) {
+                button.addEventListener('click', () => {
+                    const show = input.type === 'password';
+                    input.type = show ? 'text' : 'password';
+                    button.textContent = show ? '隱藏' : '顯示';
+                    button.setAttribute('aria-pressed', String(show));
+                    button.setAttribute('aria-label', show ? '隱藏密碼' : '顯示密碼');
+                });
+            }
+        })();
+    </script>
+    <!-- 保留 MVC 原本的 jQuery Validation；若專案套件路徑不同，可移除以下兩行，伺服器端驗證仍會運作。 -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+</body>
+</html>

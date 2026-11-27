@@ -1,0 +1,428 @@
+﻿@using BIOHub.Helpers
+@model BIOHub.ViewModels.AnalysisJobDetailsViewModel
+@{
+    ViewData["Title"] = "RNA-seq分析結果";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">RNAseq Analysis Results</h2>
+            <p class="text-muted mb-0">查看DESeq2差異表現分析結果</p>
+        </div>
+        <a asp-controller="AnalysisJob"
+        asp-action="Index"
+        class="btn btn-outline-secondary">返回分析工作</a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">分析工作資訊</h5>
+        </div>
+        <div class="card-body">
+            <div class="col-md-6">
+                <strong>分析名稱:</strong>
+                @Model.JobName
+            </div>
+
+            <div class="col-md-6">
+                <strong>分析方法:</strong>
+                @Model.AnalysisMethod
+            </div>
+
+            <div class="col-md-6">
+                <strong>分析狀態:</strong>
+                @if(Model.JobStatus == "Completed")
+                {
+                    <span class="badge bg-success">Completed</span>
+                }
+                else if(Model.JobStatus == "Failed")
+                {
+                    <span class="badge bg-danger">Failed</span>
+                }
+                else if(Model.JobStatus == "Running")
+                {
+                    <span class="badge bg-primary">Running</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Pending</span>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <strong>Control:</strong>
+                @Model.ControlGroup
+            </div>
+
+            <div class="col-md-6">
+                <strong>Treatment:</strong>
+                @Model.TreatmentGroup
+            </div>
+
+            <div class="col-md-6">
+                <strong>建立時間(UTC):</strong>
+                @(Model.StartAt.HasValue
+    ? DateTimeHelper.ToTaiwanTime(Model.StartAt.Value)
+        .ToString("yyyy-MM-dd HH:mm:ss")
+    : "尚未開始")
+            </div>
+
+            <div class="col-md-6">
+                <strong>完成時間(UTC):</strong>
+                @(Model.FinishAt.HasValue
+    ? DateTimeHelper.ToTaiwanTime(Model.FinishAt.Value)
+        .ToString("yyyy-MM-dd HH:mm:ss")
+    : "尚未完成")
+            </div>
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+@if(Model.JobStatus == "Completed" && Model.HasResult)
+{
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted">Total Genes</p>
+                    <h2 class="fw-bold">
+                        @(Model.TotalGenes?.ToString("N0") ?? "N/A")
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted"> Significant Genes</p>
+                    <h2 class="fw-bold text-danger">@(Model.SignificantGenes?.ToString("N0")??"N/A")</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+<section class="card shadow-sm mb-4" id="volcanoSection">
+
+    <div class="card-header bg-white">
+        <h5 class="mb-0">互動式 Volcano Plot</h5>
+    </div>
+
+    <div class="card-body">
+
+        <div id="volcanoExplorer"
+             data-url="@Url.Action("VolcanoData", "AnalysisJob",
+                       new { id = Model.AnalysisJobID })">
+
+            <div class="row g-3 mb-3 align-items-end">
+
+                <div class="col-sm-4 col-lg-3">
+                    <label for="volcanoPadj" class="form-label">
+                        padj 門檻
+                    </label>
+                    <input id="volcanoPadj"
+                           class="form-control"
+                           type="number"
+                           min="0.0000001"
+                           max="1"
+                           step="any"
+                           value="0.05" />
+                </div>
+
+                <div class="col-sm-4 col-lg-3">
+                    <label for="volcanoFc" class="form-label">
+                        |log2FC| 門檻
+                    </label>
+                    <input id="volcanoFc"
+                           class="form-control"
+                           type="number"
+                           min="0"
+                           step="any"
+                           value="1" />
+                </div>
+
+                <div class="col-sm-4 col-lg-3">
+                    <button id="volcanoReset"
+                            class="btn btn-outline-primary w-100"
+                            type="button">
+                        重設門檻
+                    </button>
+                </div>
+
+            </div>
+
+            <p id="volcanoMessage"
+               class="small text-muted"
+               role="status">
+                準備載入圖表…
+            </p>
+
+            <div id="volcanoPlot"
+                 class="biohub-volcano-plot">
+            </div>
+
+            <div class="row g-2 mt-2 align-items-end">
+
+                <div class="col-md-7">
+                    <label for="volcanoGeneSearch"
+                           class="form-label">
+                        搜尋 GeneSymbol / GeneID
+                    </label>
+                    <input id="volcanoGeneSearch"
+                           type="search"
+                           class="form-control"
+                           placeholder="例如 TP53"
+                           autocomplete="off" />
+                </div>
+
+                <div class="col-6 col-md-auto">
+                    <button id="volcanoSearchBtn"
+                            type="button"
+                            class="btn btn-primary w-100">
+                        搜尋基因
+                    </button>
+                </div>
+
+                <div class="col-6 col-md-auto">
+                    <button id="volcanoClearSearch"
+                            type="button"
+                            class="btn btn-outline-secondary w-100">
+                        清除搜尋
+                    </button>
+                </div>
+
+            </div>
+
+            <div id="volcanoSearchResult"
+                 class="alert alert-light border mt-3"
+                 role="status"
+                 aria-live="polite">
+                請輸入 GeneSymbol 或 GeneID，
+                搜尋結果將以橘色標示。
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+@* 不會動的火山圖 *@
+@* <div class="card shadow-sm mb-4"> *@
+    @* <div class="card-header bg-white"> *@
+        @* <h5 class="mb-0">Volcano Plot</h5> *@
+    @* </div> *@
+
+    @* <div class="card-body text-center"> *@
+            @* Url.Action("Action名稱", "Controller名稱", 路由參數) *@
+        @* <img src="@Url.Action("ResultFile", "AnalysisJob",new{ *@
+                            @* id = Model.AnalysisJobID, *@
+                            @* type = "png" *@
+                            @* })"  *@
+                            @* class="img-fluid rounded"  *@
+                            @* alt="RNAseq DESeq2 Volcano Plot"  *@
+                            @* style="max-height:650px;"/> *@
+    @* </div> *@
+@* </div> *@
+
+
+@* 結果預覽 (原本展示這樣，後來改下列AJAX展示)*@
+@*<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">
+            DEG Results Preview
+        </h5>
+    </div>
+
+    <div class="card-body">
+        <p class="text-muted">
+            顯示DEG Results前20筆基因分析結果
+        </p>
+            @if(Model.DegRows.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-sm align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                @foreach(var header in Model.DegHeaders)
+                                {
+                                    <th scope="col">@header</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var row in Model.DegRows)
+                            {
+                                <tr>
+                                    @foreach(var value in row)
+                                    {
+                                        <td>@value</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    @(Model.DegPreviewMessage??"目前沒有可預覽的 DEG 資料")
+                </div>
+            }
+        </div>
+</div>*@
+
+@* AJAX DEG Explorer *@
+<div id="degExplorer"
+    class="card shadow-sm mb-4"
+data-job-id="@Model.AnalysisJobID"
+data-api-url="@Url.Action("GetDegResults", "AnalysisJob")">
+
+<div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+<div>
+    <h5 class="mb-1">DEG Explorer</h5>
+    <small class="text-muted">搜尋、篩選與排序差異表現基因</small>
+</div>
+<button type="button"
+    id="degExportCsv"
+class="btn btn-success btn">
+<i class="bi bi-download"></i>
+下載篩選結果
+</button>
+<button type="button"
+    id="degResetAll"
+class="btn btn-outline-secondary btn-sm">
+清除所有的條件
+</button>
+</div>
+
+<div class="card-body">
+    <div id="degError"
+        class="alert alert-danger d-none"
+    role="alert">
+
+    </div >
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div>
+            <span class="text-muted">符合條件:</span>
+            <strong id="degTotalCount">--</strong>
+            <span class="text-muted">筆基因</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <label for="degPageSize" class="mb-0"> 每頁顯示</label>
+
+        <select id="degPageSize"
+            class="form-select form-select-sm"
+        style="width:auto">
+        <option value="10">10</option>
+        <option value="20" selected>20</option>
+        <option value="50">50</option>
+
+        </select>
+           </div>
+    </div>
+
+    <div id="degFilterPanel" class="border bg-light p-3 mb-3 d-none"></div>
+    <div id="degLoading"
+        class="text-center py-3 d-none"
+    role="status">
+    <div class="spinner-border text-bg-danger" aria-hidden="true"></div>
+    <div class="mt-2">正在查詢基因資料...</div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm align-middle deg-table-compact" id="degTable">
+            <thead class="table-light" id="degTableHead"></thead>
+            <tbody id="degTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+    <div id="degEmpty"
+        class="alert alert-info d-none"
+    role="status">
+    沒有符合目前條件的基因
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
+        <span id="degPageInfo" class="text-muted">第1頁</span>
+        <div class="btn-group" role="group" aria-label="DEG分頁">
+            <button type="button"
+                id="degPrevious"
+            class="btn btn-outline-primary btn-sm">
+                上一頁
+            </button>
+            <button type="button"
+                id="degNext"
+            class="btn btn-outline-primary btn-sm">
+                下一頁
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5>下載分析結果</h5>
+            <p class="text-muted">下載DESeq2差異表現分析結果</p>
+            <a asp-controller="AnalysisJob"
+            asp-action="ResultFile"
+            asp-route-id="@Model.AnalysisJobID"
+            asp-route-type = "csv"
+               class="btn btn-primary">
+                下載 DEG_results.csv
+            </a>
+    </div>
+</div>
+
+
+}else if(Model.JobStatus == "Completed")
+{
+    <div class="alert alert-warning">
+        分析工作已標記為 Completed，
+        但找不到分析結果紀錄
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        此分析工作尚未產生可查看的結果
+    </div>
+}
+</div>
+
+ @section Scripts{
+ <script src="~/js/deg-explorer.js"
+ asp-append-version="true"></script>
+ <script  src="https://cdn.plot.ly/plotly-4.1.1.min.js"></script>
+<script src="~/js/biohub-volcano.js"
+        asp-append-version="true"></script>
+
+ }

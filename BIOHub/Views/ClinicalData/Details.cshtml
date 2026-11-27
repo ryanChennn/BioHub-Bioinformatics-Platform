@@ -1,0 +1,43 @@
+﻿@model BIOHub.Models.ClinicalData
+@{
+    ViewData["Title"] = "臨床資訊";
+}
+
+<h2>臨床資訊</h2>
+
+<h5>受試者編號: @ViewBag.SubjectCode</h5>
+
+<hr />
+
+<dl>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Diagnosis)</dt>
+    <dd class="col-sm-9">@Model.Diagnosis</dd>
+
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Stage)</dt>
+    <dd class="col-sm-9">@Model.Stage</dd>
+
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Treatments)</dt>
+    <dd class="col-sm-9">@Model.Treatments</dd>
+
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Responses)</dt>
+    <dd class="col-sm-9">@Model.Responses</dd>
+
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Note)</dt>
+    <dd class="col-sm-9">@Model.Note</dd>
+
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.CreateBy)</dt>
+    <dd class="col-sm-9">@Model.CreateBy</dd>
+
+    <dt class="col-sm-3"> 建立時間</dt>
+    <dd class="col-sm-9">@Model.CreateAt.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+</dl>
+
+<a asp-controller="ClinicalData"
+asp-action="Index"
+asp-route-subjectId = "@Model.SubjectsID"
+class="btn btn-secondary">返回臨床資料</a>
+
+    <a asp-controller="ClinicalData"
+    asp-action="Edit"
+    asp-route-id = "@Model.ClinicalDataID"
+    class="btn btn-warning">編輯</a>

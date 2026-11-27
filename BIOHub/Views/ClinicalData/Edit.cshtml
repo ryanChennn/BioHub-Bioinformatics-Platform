@@ -1,0 +1,79 @@
+﻿@model BIOHub.ViewModels.ClinicalDataEditViewModel
+@{
+    ViewData["Title"] = "編輯臨床資料";
+}
+
+<h2>編輯臨床資料</h2>
+
+<h5>受試者編號: @ViewBag.SubjectCode</h5>
+
+<hr />
+
+<form asp-controller="ClinicalData"
+asp-action="Edit"
+asp-route-id = "@Model.ClinicalDataID"
+method="post">
+
+<input type="hidden" asp-for="ClinicalDataID"/>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Stage" class="form-label"></label>
+        <select asp-for="Stage" class="form-select">
+            <option value="">請選擇</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+
+        </select>
+        <span asp-validation-for="Stage" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Diagnosis" class="form-label"></label>
+        <select asp-for="Diagnosis" class="form-select">
+            <option value="">請選擇</option>
+            <option value="Astrocytoma, IDH-mutant">Astrocytoma, IDH-mutant</option>
+            <option value="Oligodendroglioma, IDH-mutant and 1p/19q-codeleted">Oligodendroglioma, IDH-mutant and 1p/19q-codeleted</option>
+            <option value="Glioblastoma, IDH-wildtype">Glioblastoma, IDH-wildtype</option>
+            <option value="Pediatric-type gliomas">Pediatric-type gliomas</option>
+            <option value="Pilocytic astrocytoma">Pilocytic astrocytoma</option>
+            <option value="Medulloblastoma">Medulloblastoma</option>
+            <option value="Meningiomas">Meningiomas</option>
+            <option value="Sellar region tumors / PitNET">Sellar region tumors / PitNET</option>
+            <option value="Schwannomas">Schwannomas</option>
+            <option value="Germ cell tumors">Germ cell tumors</option>
+        </select>
+        <span asp-validation-for="Diagnosis" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Treatments" class="form-label"></label>
+        <input asp-for="Treatments" class="form-control" />
+        <span asp-validation-for="Treatments" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Responses" class="form-label"></label>
+        <input asp-for="Responses" class="form-control" />
+        <span asp-validation-for="Responses" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Note" class="form-label"></label>
+        <input asp-for="Note" class="form-control" />
+        <span asp-validation-for="Note" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">儲存修改</button>
+
+    <a asp-controller="ClinicalData"
+    asp-action="Details"
+    asp-route-id ="@Model.ClinicalDataID"
+    class="btn btn-secondary">取消</a>
+</form>
+
+        @section Scripts {
+            <partial name="_ValidationScriptsPartial"></partial>
+        }

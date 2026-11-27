@@ -1,0 +1,50 @@
+/* BioHub Dashboard 2.0 — scoped to the Dashboard page to avoid affecting DEG Explorer */
+.bh-dashboard{--bh-ink:#172b4d;--bh-muted:#75859e;--bh-line:#e8eef8;--bh-bg:#f5f8ff;color:var(--bh-ink);font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}
+.bh-dashboard .bh-header{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}
+.bh-dashboard .bh-eyebrow{font-size:.72rem;letter-spacing:.13em;font-weight:800;color:#3468d8;margin-bottom:8px}
+.bh-dashboard .bh-page-title{font-size:clamp(1.7rem,2.2vw,2.25rem);font-weight:800;letter-spacing:-.03em;margin:0 0 5px}
+.bh-dashboard .bh-page-title span{font-weight:650;color:#475569}
+.bh-dashboard .bh-subtitle{font-size:.89rem;color:var(--bh-muted)}
+.bh-dashboard .bh-header-actions{display:flex;flex-wrap:wrap;gap:10px}
+.bh-dashboard .bh-header-actions .btn{border-radius:10px;padding:10px 15px;font-size:.86rem;font-weight:650}
+.bh-dashboard .bh-btn-refresh{border:1px solid #dbe5f5;color:#38618e;background:#fff}
+.bh-dashboard .bh-btn-primary{background:#285fd6;border-color:#285fd6;box-shadow:0 6px 16px rgba(37,99,235,.14)}
+.bh-dashboard .bh-refresh-message{min-height:20px;color:#687992;font-size:.8rem}
+.bh-dashboard .bh-kpi{border-radius:17px;background:#fff;border:1px solid #e9eef9;padding:22px 23px;height:100%;box-shadow:0 8px 25px rgba(39,70,110,.045);border-top:3px solid var(--accent,#5387ed);transition:transform .15s,box-shadow .15s}
+.bh-dashboard .bh-kpi:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(39,70,110,.09)}
+.bh-dashboard .bh-kpi-top{display:flex;justify-content:space-between;align-items:center;color:#687992;font-size:.85rem;font-weight:650}
+.bh-dashboard .bh-kpi-icon{width:41px;height:41px;display:grid;place-items:center;border-radius:12px;background:var(--tint,#eaf1ff);color:var(--accent,#3869d8);font-size:1.18rem}
+.bh-dashboard .bh-kpi-number{font-size:2rem;font-weight:800;line-height:1.2;margin:12px 0 15px;font-variant-numeric:tabular-nums}
+.bh-dashboard .bh-kpi-link{color:var(--accent,#3869d8);text-decoration:none;font-size:.78rem;font-weight:650}
+.bh-dashboard .bh-kpi-link:hover{text-decoration:underline}
+.bh-dashboard .bh-kpi-caption{color:#93a1b4;font-size:.76rem}
+.bh-dashboard .bh-kpi-blue{--accent:#3469de;--tint:#e8efff}.bh-dashboard .bh-kpi-teal{--accent:#0f9f93;--tint:#e1f9f2}
+.bh-dashboard .bh-kpi-purple{--accent:#8254ce;--tint:#f0e9ff}.bh-dashboard .bh-kpi-cyan{--accent:#1a9cc5;--tint:#e2f6fc}
+.bh-dashboard .bh-kpi-amber{--accent:#dd951c;--tint:#fff4dc}.bh-dashboard .bh-kpi-indigo{--accent:#5969ca;--tint:#e8ebff}
+.bh-dashboard .bh-panel{background:#fff;border:1px solid #e9eef9;border-radius:17px;box-shadow:0 8px 25px rgba(39,70,110,.045);overflow:hidden}
+.bh-dashboard .bh-panel-header{padding:20px 23px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--bh-line)}
+.bh-dashboard .bh-panel-header h2{font-size:1.02rem;font-weight:750;margin:0}
+.bh-dashboard .bh-panel-header p{font-size:.76rem;color:var(--bh-muted);margin:4px 0 0}
+.bh-dashboard .bh-link{color:#285fd6;text-decoration:none;font-size:.82rem;font-weight:650;white-space:nowrap}
+.bh-dashboard .bh-panel-body{padding:22px 23px}
+.bh-dashboard .bh-status{min-height:74px;background:#f8faff;border:1px solid #edf2fb;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:8px;font-size:.85rem;color:#60718c}
+.bh-dashboard .bh-status strong{font-size:1.3rem;color:var(--bh-ink);margin-left:auto;font-weight:800}
+.bh-dashboard .bh-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+.bh-dashboard .bh-dot-gray{background:#a7b2c3}.bh-dashboard .bh-dot-blue{background:#5c98ee}.bh-dashboard .bh-dot-green{background:#15b78a}.bh-dashboard .bh-dot-red{background:#ee6c78}
+.bh-dashboard .bh-progress{display:flex;overflow:hidden;width:100%;height:13px;background:#edf1f7;border-radius:20px;margin:6px 0 10px}
+.bh-dashboard .bh-progress>div{height:100%;transition:width .35s ease}
+.bh-dashboard .bh-progress-completed{background:#15b78a}.bh-dashboard .bh-progress-running{background:#5c98ee}.bh-dashboard .bh-progress-pending{background:#a7b2c3}.bh-dashboard .bh-progress-failed{background:#ee6c78}
+.bh-dashboard .bh-chart-hint{font-size:.73rem;color:#8b99ac}
+.bh-dashboard .bh-table-wrap{width:100%;overflow-x:auto}
+.bh-dashboard .bh-table{min-width:570px;margin:0;font-size:.8rem}
+.bh-dashboard .bh-table th{font-size:.72rem;color:#8795a9;font-weight:750;background:#f9fbff;white-space:nowrap;padding:14px 15px;border-bottom:1px solid #e8eef8}
+.bh-dashboard .bh-table td{padding:15px;vertical-align:middle;border-bottom:1px solid #eff3f8;color:#33445c}
+.bh-dashboard .bh-table tbody tr:last-child td{border-bottom:0}
+.bh-dashboard .bh-table .bh-empty{text-align:center;padding:32px;color:#8a9aad}
+.bh-dashboard .bh-code{font-family:ui-monospace,Consolas,monospace;font-size:.75rem;color:#285fd6}
+.bh-dashboard .bh-table .btn{border-radius:8px;font-size:.73rem;white-space:nowrap}
+.bh-dashboard .bh-tag{display:inline-block;padding:5px 10px;border-radius:30px;font-size:.72rem;font-weight:750;white-space:nowrap}
+.bh-dashboard .bh-tag-neutral{background:#edf1f6;color:#64748b}.bh-dashboard .bh-tag-success{background:#ddf8eb;color:#14845c}
+.bh-dashboard .bh-tag-info{background:#e2efff;color:#2567c8}.bh-dashboard .bh-tag-danger{background:#ffe5e8;color:#c0394b}
+@media(max-width:767.98px){.bh-dashboard .bh-header-actions{width:100%}.bh-dashboard .bh-header-actions .btn{flex:1}.bh-dashboard .bh-kpi{padding:18px}.bh-dashboard .bh-panel-header{padding:16px;align-items:flex-start}.bh-dashboard .bh-panel-body{padding:16px}.bh-dashboard .bh-status{min-height:66px}}
+@media(max-width:440px){.bh-dashboard .bh-page-title{font-size:1.7rem}.bh-dashboard .bh-kpi-number{font-size:1.75rem}}

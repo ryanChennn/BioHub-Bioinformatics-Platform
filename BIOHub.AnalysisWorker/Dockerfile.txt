@@ -1,0 +1,36 @@
+﻿
+# 第一階段：編譯 .NET 10 Worker
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+WORKDIR /src
+
+# 複製整個 Solution，
+# 因為 Worker 目前參考 BIOHub MVC 專案
+COPY . .
+
+RUN dotnet publish \
+    "BIOHub.AnalysisWorker/BIOHub.AnalysisWorker.csproj" \
+    -c Release \
+    -o /app/publish \
+    /p:UseAppHost=false
+
+# 第二階段：取得 .NET 10 ASP.NET Core Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS dotnet-runtime
+
+# 第三階段：使用已安裝 DESeq2 的 R Image
+FROM biohub-r:dev AS final
+
+# 將 .NET Runtime 複製到 R Image
+COPY --from=dotnet-runtime /usr/share/dotnet /usr/share/dotnet
+
+ENV DOTNET_ROOT=/usr/share/dotnet
+ENV PATH="/usr/share/dotnet:${PATH}"
+ENV DOTNET_RUNNING_IN_CONTAINER=true
+
+WORKDIR /app
+
+# 複製編譯完成的 Worker
+COPY --from=build /app/publish .
+
+# 啟動 Worker
+ENTRYPOINT ["dotnet", "BIOHub.AnalysisWorker.dll"]

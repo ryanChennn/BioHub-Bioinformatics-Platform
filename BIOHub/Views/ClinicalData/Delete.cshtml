@@ -1,0 +1,47 @@
+﻿@model BIOHub.Models.ClinicalData
+@{
+
+    ViewData["Title"] = "刪除臨床資料";
+}
+
+<h2>刪除臨床資料</h2>
+
+<h5>受試者編號: @ViewBag.SubjectCode</h5>
+
+<div class="alert alert-warning">
+    確定要刪除此筆臨床資料嗎？
+    刪除後無法復原。
+</div>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<dl class="row">
+    <dt class="col-sm-3">臨床診斷</dt>
+    <dd class="col-sm-9">@Model.Diagnosis</dd>
+
+    <dt class="col-sm-3">疾病分期</dt>
+    <dd class="col-sm-9">@Model.Stage</dd>
+
+    <dt class="col-sm-3">臨床治療</dt>
+    <dd class="col-sm-9">@Model.Treatments</dd>
+
+    <dt class="col-sm-3">臨床反應</dt>
+    <dd class="col-sm-9">@Model.Responses</dd>
+
+    <dt class="col-sm-3">備註</dt>
+    <dd class="col-sm-9">@Model.Note</dd>
+</dl>
+
+<form asp-controller="ClinicalData"
+asp-action="Delete" 
+asp-route-id = "@Model.ClinicalDataID"
+method="post">
+
+
+<button type="submit" class="btn btn-danger">確認刪除</button>
+
+<a asp-controller="ClinicalData"
+asp-action="Details"
+asp-route-id =" @Model.ClinicalDataID"
+class="btn btn-secondary">取消</a>
+</form>

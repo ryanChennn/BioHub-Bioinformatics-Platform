@@ -1,0 +1,99 @@
+﻿@model BIOHub.ViewModels.AnalysisJobCreateViewModel
+@{
+    ViewData["Title"] = "新增RNAseq分析工作";
+}
+
+<div class="container py-4">
+    <h2>新增 RNA-seq 分析工作</h2>
+    <p class="text-muted">建立差異表現分析工作，後續再上傳 Counts Matrix。</p>
+
+
+    <form asp-controller="AnalysisJob"
+    asp-action="Create"
+    method="post">
+    
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="ResearchProjectsID" class="form-label">
+
+        </label>
+        <select asp-for="ResearchProjectsID"
+        asp-items="ViewBag.Projects"
+        class="form-select">
+        <option value="">請選擇研究計畫</option>
+    </select>
+    <span asp-validation-for="ResearchProjectsID" class="text-danger"></span>
+    </div>
+
+        <div class="mb-3">
+            <label asp-for="Species"
+                   class="form-label">RNA-seq Species</label>
+
+            <select asp-for="Species" class="form-select">
+                <option value="">請選擇</option>
+                <option value="Human">人類 (Homo Sapiens)</option>
+                <option value="Mouse">小鼠 (Mus musculus)</option>
+                <option value="Rat">大鼠 (Rattus norvegicus)</option>
+            </select>
+            
+
+            <span asp-validation-for="Species"
+                  class="text-danger"></span>
+            <div class="form-text">
+                請依Counts Matrix使用的物種選擇，此設定將用於後續基因分析
+            </div>
+
+        </div>
+
+
+        <div class="mb-3">
+            <label asp-for="JobName"
+                   class="form-label"></label>
+
+            <select asp-for="JobName" class="form-select">
+                <option value="">請選擇</option>
+                <option value="Deseq2">Deseq2</option>
+                
+            </select>
+            @* <input asp-for="JobName"
+                   class="form-control" /> *@
+
+            <span asp-validation-for="JobName"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ControlGroup"
+                   class="form-label"></label>
+
+            <input asp-for="ControlGroup"
+                   class="form-control" 
+                   placeholder="例如Normal"/>
+
+            <span asp-validation-for="ControlGroup"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TreatmentGroup"
+                   class="form-label"></label>
+
+            <input asp-for="TreatmentGroup"
+                   class="form-control"
+                   placeholder="例如Tumor" />
+
+            <span asp-validation-for="TreatmentGroup"
+                  class="text-danger"></span>
+        </div>
+
+        <button class="btn btn-primary" type="submit">建立分析工作</button>
+        <a asp-controller="AnalysisJob"
+        asp-action="Index">返回</a>
+    </form>
+
+</div>
+
+            @section Scripts{
+                <partial name="_ValidationScriptsPartial"></partial>
+            }

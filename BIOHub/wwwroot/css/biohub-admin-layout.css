@@ -1,0 +1,32 @@
+:root {
+  --bh-shell-blue: #2563eb;
+  --bh-shell-text: #1d2d44;
+  --bh-shell-muted: #66788d;
+  --bh-shell-border: #e5eaf3;
+  --bh-shell-bg: #f4f7fc;
+  --bh-shell-top: 66px;
+  --bh-shell-side: 248px;
+}
+* { box-sizing: border-box; }
+body.bh-shell-body { background: var(--bh-shell-bg); color: var(--bh-shell-text); font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif; }
+.bh-topbar { height: var(--bh-shell-top); z-index: 1035; box-shadow: 0 2px 16px rgba(40,62,100,.04); }
+.bh-brand { color: #1f3663; font-weight: 700; font-size: 1.15rem; }
+.bh-brand:hover { color: var(--bh-shell-blue); }
+.bh-brand-mark { display: inline-grid; place-items: center; width: 35px; height: 35px; border-radius: 11px; background: #e7efff; color: var(--bh-shell-blue); }
+.bh-brand-caption, .bh-user-name { font-size: .83rem; color: var(--bh-shell-muted); }
+.bh-menu-trigger { padding: .25rem .45rem; border: 1px solid var(--bh-shell-border); }
+.bh-side-desktop { position: fixed; top: var(--bh-shell-top); bottom: 0; left: 0; width: var(--bh-shell-side); padding: 26px 14px 16px; background: #fff; border-right: 1px solid var(--bh-shell-border); flex-direction: column; z-index: 1020; overflow-y: auto; }
+.bh-side-section { color: #91a0b4; font-size: .68rem; font-weight: 700; letter-spacing: .12em; padding: 0 14px; margin-bottom: 13px; }
+.bh-side-nav { display: flex; flex-direction: column; gap: 6px; }
+.bh-side-link { display: flex; align-items: center; gap: 13px; min-height: 46px; padding: 11px 14px; color: #52657d; font-size: .875rem; font-weight: 600; text-decoration: none; border-radius: 11px; transition: background .16s ease, color .16s ease; }
+.bh-side-link i { width: 21px; text-align: center; font-size: 1.06rem; }
+.bh-side-link:hover { background: #f1f5ff; color: var(--bh-shell-blue); }
+.bh-side-link.is-active { background: #eaf1ff; color: var(--bh-shell-blue); }
+.bh-side-note { padding: 14px 11px; background: #f7f9fd; border-radius: 12px; color: #8493a9; font-size: .72rem; }
+.bh-mobile-sidebar { --bs-offcanvas-width: min(288px, 86vw); }
+.bh-mobile-sidebar .offcanvas-body { padding: 20px 12px; }
+.bh-shell-content { padding-top: var(--bh-shell-top); min-height: 100vh; }
+.bh-shell-main { min-width: 0; max-width: 1700px; margin: 0 auto; padding: 18px 22px 30px; }
+@media (min-width: 992px) { .bh-shell-content-admin { margin-left: var(--bh-shell-side); } }
+@media (max-width: 767.98px) { .bh-shell-main { padding: 10px 8px 24px; } .bh-brand-caption { display: none; } }
+/* Keep Dashboard-specific .bh-dashboard / .bh-kpi / .bh-panel styles in biohub-dashboard2.css */

@@ -1,0 +1,7 @@
+.biohub-volcano-plot { min-height: 490px; width: 100%; }
+#volcanoExplorer .form-label { font-weight: 600; color: #334155; font-size: .875rem; }
+#volcanoExplorer .form-control { border-radius: 10px; }
+@media (max-width: 575.98px) {
+  .biohub-volcano-plot { min-height: 400px; }
+  #volcanoExplorer .card-body { padding: 14px; }
+}

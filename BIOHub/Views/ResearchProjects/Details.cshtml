@@ -1,0 +1,101 @@
+@model BIOHub.Models.ResearchProjects
+@{
+    ViewData["Title"] = "研究計畫詳細資料";
+    var status = Model.ProjectStatus?.Trim() ?? "";
+    var statusLabel = status switch
+    {
+        "Planning" => "申請中",
+        "Active" => "進行中",
+        "Complete" => "已結束",
+        "Completed" => "已結束",
+        "Cancelled" => "已取消",
+        _ => string.IsNullOrWhiteSpace(status) ? "未設定" : status
+    };
+    var statusCss = status switch
+    {
+        "Planning" => "planning",
+        "Active" => "active",
+        "Complete" or "Completed" => "complete",
+        "Cancelled" => "cancelled",
+        _ => "planning"
+    };
+}
+
+<div class="bh-research container-fluid py-3 py-lg-4">
+    <div class="bh-research-header">
+        <div>
+            <div class="bh-research-eyebrow"><i class="bi bi-folder2-open me-2"></i>RESEARCH MANAGEMENT</div>
+            <h1 class="bh-research-title">研究計畫詳細資料</h1>
+            <p class="bh-research-subtitle mb-0">檢視研究計畫資訊與相關管理入口。</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>返回列表</a>
+            <a asp-action="Edit" asp-route-id="@Model.ResearchProjectsID" class="btn btn-primary bh-research-primary"><i class="bi bi-pencil-square me-1"></i>編輯計畫</a>
+        </div>
+    </div>
+
+    <section class="bh-research-card mb-4" aria-labelledby="projectTitle">
+        <div class="bh-research-card-header bh-detail-hero">
+            <div class="d-flex flex-wrap align-items-start justify-content-between gap-3">
+                <div>
+                    <div class="bh-detail-kicker">@Model.ProjectCode</div>
+                    <h2 class="bh-detail-name mb-2" id="projectTitle">@Model.ProjectName</h2>
+                    <div class="text-secondary small"><i class="bi bi-building me-1"></i>@(string.IsNullOrWhiteSpace(Model.Institution) ? "未設定研究機構" : Model.Institution)</div>
+                </div>
+                <span class="bh-research-tag @statusCss">@statusLabel</span>
+            </div>
+        </div>
+        <div class="bh-research-card-body">
+            <div class="row g-4">
+                <div class="col-12 col-lg-6">
+                    <div class="bh-detail-label">研究主持人</div>
+                    <div class="bh-detail-value">@(string.IsNullOrWhiteSpace(Model.PrincipalInvestigator) ? "未設定" : Model.PrincipalInvestigator)</div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="bh-detail-label">研究機構</div>
+                    <div class="bh-detail-value">@(string.IsNullOrWhiteSpace(Model.Institution) ? "未設定" : Model.Institution)</div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="bh-detail-label">開始日期</div>
+                    <div class="bh-detail-value">@(Model.StartDate?.ToString("yyyy-MM-dd") ?? "未設定")</div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="bh-detail-label">結束日期</div>
+                    <div class="bh-detail-value">@(Model.EndDate?.ToString("yyyy-MM-dd") ?? "未設定")</div>
+                </div>
+                <div class="col-12"><hr class="bh-detail-rule" /></div>
+                <div class="col-12">
+                    <h3 class="bh-research-section-title mb-3">研究計畫說明</h3>
+                    <div class="bh-detail-description">@(string.IsNullOrWhiteSpace(Model.Description) ? "尚未填寫研究計畫說明。" : Model.Description)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-7">
+            <section class="bh-research-card h-100" aria-labelledby="manageTitle">
+                <div class="bh-research-card-header"><h2 class="bh-research-section-title" id="manageTitle">相關資料管理</h2><div class="small text-secondary">管理此計畫下的研究對象與分析作業</div></div>
+                <div class="bh-research-card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-controller="Subjects" asp-action="Index" asp-route-ResearchProjectId="@Model.ResearchProjectsID" class="btn btn-outline-primary"><i class="bi bi-people me-1"></i>受試者管理</a>
+                        <a asp-controller="AnalysisJob" asp-action="Index" class="btn btn-outline-primary" asp-route-researchProjectId="@Model.ResearchProjectsID">
+                            <i class="bi bi-activity me-1"></i>RNA-seq 分析工作</a>
+                    </div>
+                    <p class="small text-secondary mt-3 mb-0">點選RNA-seq分析工作，可察看當前所屬分析</p>
+                </div>
+            </section>
+        </div>
+        <div class="col-12 col-lg-5">
+            <section class="bh-research-card h-100" aria-labelledby="auditTitle">
+                <div class="bh-research-card-header"><h2 class="bh-research-section-title" id="auditTitle">建立紀錄</h2></div>
+                <div class="bh-research-card-body">
+                    <div class="bh-detail-label">建立者</div>
+                    <div class="bh-detail-value mb-3">@Model.CreatedBy</div>
+                    <div class="bh-detail-label">建立日期</div>
+                    <div class="bh-detail-value">@Model.CreateAt.ToString("yyyy-MM-dd HH:mm")</div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

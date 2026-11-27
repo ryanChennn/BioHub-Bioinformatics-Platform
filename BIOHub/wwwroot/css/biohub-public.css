@@ -1,0 +1,56 @@
+
+/* Moved out of Stitch's inline @layer block because Razor treats @layer as C#. */
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overscroll-behavior: none;
+}
+
+main > :first-child {
+    margin-top: 0 !important;
+}
+
+main > :last-child {
+    margin-bottom: 0 !important;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* BioHub public-site overrides.
+   The current Stitch UI uses Tailwind CDN. Keep this file for project-specific overrides. */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-width: 320px;
+}
+
+/* Prevent fixed header from covering anchor targets. */
+section[id] {
+    scroll-margin-top: 6rem;
+}
+
+/* Improve accessibility for keyboard users. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.35);
+    outline-offset: 2px;
+}
+
+/* Optional: keep public pages readable on very small screens. */
+@media (max-width: 480px) {
+    body {
+        font-size: 15px;
+    }
+}

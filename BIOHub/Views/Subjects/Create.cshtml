@@ -1,0 +1,27 @@
+@model BIOHub.ViewModels.SubjectsCreateViewModel
+@{
+    ViewData["Title"] = "新增受試者";
+}
+<div class="bh-subjects container-fluid py-4">
+    <div class="bh-subjects-header">
+        <div><span class="bh-subjects-eyebrow">BIOHUB / CLINICAL MANAGEMENT</span><h2 class="bh-subjects-title">新增受試者</h2><p class="bh-subjects-muted mb-0">研究計畫：<strong>@ViewBag.ProjectName</strong></p></div>
+        <a asp-action="Index" asp-route-researchProjectId="@ViewBag.ResearchProjectId" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>返回列表</a>
+    </div>
+    <div class="bh-subjects-panel bh-subjects-form-panel">
+        <div class="bh-subjects-panel-head"><div><h5 class="mb-1">受試者基本資料</h5><p class="bh-subjects-muted mb-0">請填寫必要資訊，研究計畫由目前頁面帶入</p></div></div>
+        <form asp-controller="Subjects" asp-action="Create" asp-route-researchProjectId="@ViewBag.ResearchProjectId" method="post" class="p-4">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="row g-3">
+                <div class="col-md-6"><label asp-for="SubjectCode" class="form-label fw-semibold"></label><input asp-for="SubjectCode" class="form-control" placeholder="請輸入受試者編號" /><span asp-validation-for="SubjectCode" class="text-danger small"></span></div>
+                <div class="col-md-6"><label asp-for="Gender" class="form-label fw-semibold"></label><select asp-for="Gender" class="form-select"><option value="">請選擇</option><option value="Male">男性</option><option value="Female">女性</option></select><span asp-validation-for="Gender" class="text-danger small"></span></div>
+                <div class="col-md-6"><label asp-for="Birth" class="form-label fw-semibold"></label><input asp-for="Birth" type="date" class="form-control" /><span asp-validation-for="Birth" class="text-danger small"></span></div>
+                <div class="col-md-6"><label asp-for="Age" class="form-label fw-semibold"></label><input asp-for="Age" type="number" class="form-control" /><span asp-validation-for="Age" class="text-danger small"></span></div>
+                <div class="col-md-6"><label asp-for="EnrollmentDate" class="form-label fw-semibold"></label><input asp-for="EnrollmentDate" type="date" class="form-control" /><span asp-validation-for="EnrollmentDate" class="text-danger small"></span></div>
+                <div class="col-md-6"><label asp-for="Status" class="form-label fw-semibold"></label><select asp-for="Status" class="form-select"><option value="">請選擇</option><option value="FollowUp">追蹤中</option><option value="Completed">已完成</option><option value="WithDrawn">退出研究</option></select><span asp-validation-for="Status" class="text-danger small"></span></div>
+            </div>
+            <div class="bh-subjects-form-footer"><a asp-action="Index" asp-route-researchProjectId="@ViewBag.ResearchProjectId" class="btn btn-outline-secondary">取消</a><button type="submit" class="btn btn-primary"><i class="bi bi-check2 me-1"></i>儲存受試者</button></div>
+        </form>
+    </div>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

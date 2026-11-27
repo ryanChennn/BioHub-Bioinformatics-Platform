@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+.dockerignore
+**/biohub-docker.env
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+.vs/
+**/*.user
+**/appsettings.Development.json

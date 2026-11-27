@@ -1,0 +1,35 @@
+@model BIOHub.Models.ResearchProjects
+@{
+    ViewData["Title"] = "編輯研究計畫";
+}
+<div class="bh-research container-fluid py-3 py-lg-4">
+    <div class="bh-research-header">
+        <div><div class="bh-research-eyebrow"><i class="bi bi-pencil-square me-2"></i>RESEARCH MANAGEMENT</div><h1 class="bh-research-title">編輯研究計畫</h1><p class="bh-research-subtitle mb-0">更新計畫內容與執行狀態。計畫編號：@Model.ProjectCode</p></div>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>返回列表</a>
+    </div>
+    <div class="bh-research-card bh-research-form-card">
+        <div class="bh-research-card-header"><h2 class="bh-research-section-title">計畫基本資料</h2><p class="bh-research-subtitle mb-0">修改後請按「儲存變更」</p></div>
+        <form asp-controller="ResearchProjects" asp-action="Edit" asp-route-id="@Model.ResearchProjectsID" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="ResearchProjectsID" type="hidden" />
+            <div class="bh-research-card-body">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <div class="row g-4">
+                    <div class="col-12 col-lg-6"><label asp-for="ProjectCode" class="form-label">計畫編號 <span class="text-danger">*</span></label><input asp-for="ProjectCode" class="form-control" /><span asp-validation-for="ProjectCode" class="text-danger small"></span></div>
+                    <div class="col-12 col-lg-6"><label asp-for="ProjectName" class="form-label">計畫名稱 <span class="text-danger">*</span></label><input asp-for="ProjectName" class="form-control" /><span asp-validation-for="ProjectName" class="text-danger small"></span></div>
+                    <div class="col-12"><label asp-for="Description" class="form-label">研究計畫說明</label><textarea asp-for="Description" class="form-control" rows="4"></textarea><span asp-validation-for="Description" class="text-danger small"></span></div>
+                    <div class="col-12 col-lg-6"><label asp-for="PrincipalInvestigator" class="form-label">計畫主持人</label><input asp-for="PrincipalInvestigator" class="form-control" /><span asp-validation-for="PrincipalInvestigator" class="text-danger small"></span></div>
+                    <div class="col-12 col-lg-6"><label asp-for="Institution" class="form-label">研究機構</label><input asp-for="Institution" class="form-control" /><span asp-validation-for="Institution" class="text-danger small"></span></div>
+                    <div class="col-12 col-md-6"><label asp-for="StartDate" class="form-label">開始日期</label><input asp-for="StartDate" asp-format="{0:yyyy-MM-dd}" type="date" class="form-control" /><span asp-validation-for="StartDate" class="text-danger small"></span></div>
+                    <div class="col-12 col-md-6"><label asp-for="EndDate" class="form-label">結束日期</label><input asp-for="EndDate" asp-format="{0:yyyy-MM-dd}" type="date" class="form-control" /><span asp-validation-for="EndDate" class="text-danger small"></span></div>
+                    <div class="col-12 col-lg-6"><label asp-for="ProjectStatus" class="form-label">計畫狀態</label><select asp-for="ProjectStatus" class="form-select"><option value="">請選擇狀態</option><option value="Planning">申請中</option><option value="Active">進行中</option><option value="Complete">已結束</option><option value="Cancelled">已取消</option></select><span asp-validation-for="ProjectStatus" class="text-danger small"></span></div>
+                </div>
+                <div class="bh-research-note mt-4"><i class="bi bi-shield-check me-2"></i>建立者、建立時間與所屬帳號必須由伺服器保留原值，不可從此表單覆寫。</div>
+            </div>
+            <div class="bh-research-form-footer"><a asp-action="Index" class="btn btn-light">取消</a><button type="submit" class="btn btn-primary bh-research-primary"><i class="bi bi-check2 me-1"></i>儲存變更</button></div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

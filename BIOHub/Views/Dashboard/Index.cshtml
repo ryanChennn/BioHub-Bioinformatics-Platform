@@ -1,0 +1,223 @@
+@model BIOHub.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "總覽";
+    Layout = "_AdminLayout";
+    var totalJobs = Model.TotalAnalysisJobs;
+    var statusTotal = Model.PendingJobs + Model.RunningJobs + Model.CompletedJobs + Model.FailedJobs;
+    var pctCompleted = totalJobs > 0 ? Model.CompletedJobs * 100.0 / totalJobs : 0;
+    var pctRunning = totalJobs > 0 ? Model.RunningJobs * 100.0 / totalJobs : 0;
+    var pctPending = totalJobs > 0 ? Model.PendingJobs * 100.0 / totalJobs : 0;
+    var pctFailed = totalJobs > 0 ? Model.FailedJobs * 100.0 / totalJobs : 0;
+}
+
+<div class="bh-dashboard container-fluid py-3 py-lg-4" id="biohubDashboard">
+    <div class="bh-header mb-4">
+        <div>
+            <div class="bh-eyebrow"><i class="bi bi-grid-1x2-fill me-2"></i>RESEARCH WORKSPACE</div>
+            <h1 class="bh-page-title">研究計畫總覽 </h1>
+            <p class="bh-subtitle mb-0">掌握研究計畫、臨床資料與 RNA-seq 分析進度。</p>
+        </div>
+        <div class="bh-header-actions">
+            <button type="button" id="refreshStatsBtn" class="btn btn-light bh-btn-refresh">
+                <i class="bi bi-arrow-clockwise me-1"></i> 更新統計
+            </button>
+            <a asp-controller="AnalysisJob" asp-action="Create" class="btn btn-primary bh-btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> 新增分析工作
+            </a>
+        </div>
+    </div>
+    <div class="bh-refresh-message mb-3" id="statsStatus" role="status" aria-live="polite"></div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="bh-kpi bh-kpi-blue">
+                <div class="bh-kpi-top"><span>研究計畫</span><span class="bh-kpi-icon"><i class="bi bi-folder2-open"></i></span></div>
+                <div class="bh-kpi-number" id="TotalProjects">@Model.TotalProjects</div>
+                <a asp-controller="ResearchProjects" asp-action="Index" class="bh-kpi-link">查看研究計畫 <i class="bi bi-arrow-up-right"></i></a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="bh-kpi bh-kpi-teal">
+                <div class="bh-kpi-top"><span>受試者</span><span class="bh-kpi-icon"><i class="bi bi-people"></i></span></div>
+                <div class="bh-kpi-number" id="TotalSubjects">@Model.TotalSubjects</div>
+                <div class="bh-kpi-caption">目前可存取研究計畫中的受試者</div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="bh-kpi bh-kpi-purple">
+                <div class="bh-kpi-top"><span>檢體總數</span><span class="bh-kpi-icon"><i class="bi bi-droplet-half"></i></span></div>
+                <div class="bh-kpi-number" id="TotalSamples">@Model.TotalSamples</div>
+                <div class="bh-kpi-caption">Samples Records</div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="bh-kpi bh-kpi-cyan">
+                <div class="bh-kpi-top"><span>臨床資料</span><span class="bh-kpi-icon"><i class="bi bi-clipboard2-pulse"></i></span></div>
+                <div class="bh-kpi-number" id="TotalClinicalData">@Model.TotalClinicalData</div>
+                <div class="bh-kpi-caption">Clinical Data Records</div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="bh-kpi bh-kpi-amber">
+                <div class="bh-kpi-top"><span>存活分析資料</span><span class="bh-kpi-icon"><i class="bi bi-heart-pulse"></i></span></div>
+                <div class="bh-kpi-number" id="TotalSurvivalData">@Model.TotalSurvivalData</div>
+                <div class="bh-kpi-caption">Survival Data Records</div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="bh-kpi bh-kpi-indigo">
+                <div class="bh-kpi-top"><span>RNA-seq 分析工作</span><span class="bh-kpi-icon"><i class="bi bi-activity"></i></span></div>
+                <div class="bh-kpi-number" id="TotalAnalysisJobs">@Model.TotalAnalysisJobs</div>
+                <a asp-controller="AnalysisJob" asp-action="Index" class="bh-kpi-link">查看分析工作 <i class="bi bi-arrow-up-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <section class="bh-panel mb-4" aria-labelledby="bhAnalysisHeading">
+        <div class="bh-panel-header">
+            <div><h2 id="bhAnalysisHeading">RNA-seq 分析工作狀態</h2><p>統計目前使用者可存取的分析工作</p></div>
+            <a asp-controller="AnalysisJob" asp-action="Index" class="bh-link">全部分析工作 <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="bh-panel-body">
+            <div class="row g-3 mb-3">
+                <div class="col-6 col-lg-3"><div class="bh-status"><span class="bh-dot bh-dot-gray"></span>等待中 <strong id="PendingJobs">@Model.PendingJobs</strong></div></div>
+                <div class="col-6 col-lg-3"><div class="bh-status"><span class="bh-dot bh-dot-blue"></span>執行中 <strong id="RunningJobs">@Model.RunningJobs</strong></div></div>
+                <div class="col-6 col-lg-3"><div class="bh-status"><span class="bh-dot bh-dot-green"></span>已完成 <strong id="CompletedJobs">@Model.CompletedJobs</strong></div></div>
+                <div class="col-6 col-lg-3"><div class="bh-status"><span class="bh-dot bh-dot-red"></span>失敗 <strong id="FailedJobs">@Model.FailedJobs</strong></div></div>
+            </div>
+            <div class="bh-progress" role="img" aria-label="分析工作狀態比例" id="analysisStatusChart">
+                <div id="bhBarCompleted" class="bh-progress-completed" style="width:@(pctCompleted.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                <div id="bhBarRunning" class="bh-progress-running" style="width:@(pctRunning.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                <div id="bhBarPending" class="bh-progress-pending" style="width:@(pctPending.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                <div id="bhBarFailed" class="bh-progress-failed" style="width:@(pctFailed.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+            </div>
+            <p class="bh-chart-hint mb-0">顏色依序代表：已完成、執行中、等待中、失敗。若狀態總數與工作總數不同，表示有其他狀態。</p>
+        </div>
+    </section>
+
+    <div class="row g-4">
+        <div class="col-12 col-xxl-6">
+            <section class="bh-panel h-100" aria-labelledby="bhRecentProjectsHeading">
+                <div class="bh-panel-header"><div><h2 id="bhRecentProjectsHeading">最近建立的研究計畫</h2><p>依建立時間顯示最新五筆</p></div></div>
+                <div class="bh-table-wrap table-responsive">
+                    <table class="table bh-table align-middle">
+                        <thead><tr><th>計畫編號</th><th>名稱</th><th>狀態</th><th>建立時間</th><th>操作</th></tr></thead>
+                        <tbody>
+                        @if (!Model.RecentProjects.Any())
+                        {
+                            <tr><td colspan="5" class="bh-empty">目前尚未建立研究計畫</td></tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model.RecentProjects)
+                            {
+                                <tr>
+                                    <td class="bh-code">@item.ProjectCode</td><td>@item.ProjectName</td>
+                                    <td><span class="bh-tag bh-tag-neutral">@(item.ProjectStatus ?? "未設定")</span></td>
+                                    <td class="text-nowrap">@item.CreateAt.ToString("yyyy-MM-dd")</td>
+                                    <td><a asp-controller="ResearchProjects" asp-action="Details" asp-route-id="@item.ResearchProjectsID" class="btn btn-outline-primary btn-sm">查看</a></td>
+                                </tr>
+                            }
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <div class="col-12 col-xxl-6">
+            <section class="bh-panel h-100" aria-labelledby="bhRecentAnalysisHeading">
+                <div class="bh-panel-header"><div><h2 id="bhRecentAnalysisHeading">最近 RNA-seq 分析工作</h2><p>追蹤分析工作執行狀態</p></div></div>
+                <div class="bh-table-wrap table-responsive">
+                    <table class="table bh-table align-middle">
+                        <thead><tr><th>分析名稱</th><th>研究計畫</th><th>物種</th><th>狀態</th><th>建立時間</th><th>操作</th></tr></thead>
+                        <tbody>
+                        @if (!Model.RecentAnalysisJobs.Any())
+                        {
+                            <tr><td colspan="6" class="bh-empty">目前尚無 RNA-seq 分析工作</td></tr>
+                        }
+                        else
+                        {
+                            foreach (var job in Model.RecentAnalysisJobs)
+                            {
+                                var stateClass = job.JobStatus switch
+                                {
+                                    "Completed" => "bh-tag-success", "Running" => "bh-tag-info", "Failed" => "bh-tag-danger", _ => "bh-tag-neutral"
+                                };
+                                <tr>
+                                    <td>@job.JobName</td><td>@job.ProjectName</td><td>@(job.Species ?? "未設定")</td>
+                                    <td><span class="bh-tag @stateClass">@job.JobStatus</span></td>
+                                    <td class="text-nowrap">@job.CreateAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td><a asp-controller="AnalysisJob" asp-action="Details" asp-route-id="@job.AnalysisJobID" class="btn btn-outline-primary btn-sm">查看</a></td>
+                                </tr>
+                            }
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(() => {
+    const refreshButton = document.getElementById('refreshStatsBtn');
+    const status = document.getElementById('statsStatus');
+    const endpoint = '@Url.Content("~/api/dashboard/stats")';
+    if (!refreshButton || !status) return;
+
+    const values = ['TotalProjects', 'TotalSubjects', 'TotalClinicalData', 'TotalSurvivalData', 'TotalSamples',
+        'TotalAnalysisJobs', 'PendingJobs', 'RunningJobs', 'CompletedJobs', 'FailedJobs'];
+    const camel = value => value[0].toLowerCase() + value.slice(1);
+    const setNumber = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = Number(value).toLocaleString('zh-TW');
+    };
+    const drawStatus = data => {
+        const total = Number(data.totalAnalysisJobs) || 0;
+        const jobs = [
+            ['Completed', Number(data.completedJobs) || 0],
+            ['Running', Number(data.runningJobs) || 0],
+            ['Pending', Number(data.pendingJobs) || 0],
+            ['Failed', Number(data.failedJobs) || 0]
+        ];
+        jobs.forEach(([name, count]) => {
+            const el = document.getElementById('bhBar' + name);
+            if (el) el.style.width = (total > 0 ? count / total * 100 : 0) + '%';
+        });
+    };
+
+    async function refreshDashboardStats() {
+        refreshButton.disabled = true;
+        status.textContent = '最新資料';
+        try {
+            const response = await fetch(endpoint, {
+                method: 'GET', credentials: 'same-origin', cache: 'no-store',
+                headers: { Accept: 'application/json' }
+            });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            if (!(response.headers.get('content-type') || '').includes('application/json')) {
+                throw new Error('未取得 JSON；可能需要重新登入');
+            }
+            const data = await response.json();
+            // 先檢查 API 格式，避免部分更新後才發現欄位缺失。
+            if (values.some(key => typeof data[camel(key)] !== 'number')) {
+                throw new Error('Dashboard API 缺少統計欄位');
+            }
+            values.forEach(key => setNumber(key, data[camel(key)]));
+            drawStatus(data);
+            status.textContent = '統計資料已更新';
+        // } catch (error) {
+        //     console.error('Dashboard API 更新失敗', error);
+        //     status.textContent = '更新失敗，請檢查登入狀態或 API 回傳格式。';
+        } finally {
+            refreshButton.disabled = false;
+        }
+    }
+    refreshButton.addEventListener('click', refreshDashboardStats);
+    // 首次數字由 Razor 產生，進入頁面後以 API 同步。
+    refreshDashboardStats();
+})();
+</script>
+}

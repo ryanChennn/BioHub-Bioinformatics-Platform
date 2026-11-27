@@ -1,0 +1,77 @@
+# BioHub - staged Docker Compose for the existing Docker Desktop installation.
+# On this existing Docker Desktop PC: AnalysisWorker runs by default.
+# MVC and Vue start with --profile website. Existing SQL stays external.
+# Images tagged :dev or :mvc-release-test are LOCAL; publishing to others needs build/push.
+name: biohub
+
+services:
+  analysis-worker:
+    image: biohub-analysis-worker:dev
+    restart: unless-stopped
+    user: "${BIOHUB_UID}:${BIOHUB_GID}"
+    environment:
+      ConnectionStrings__BIOHubConnection: "Server=host.docker.internal,14333;Database=BIOHubDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};Encrypt=True;TrustServerCertificate=True"
+      RNAseqWorker__ScriptPath: /app/RScripts/run_Deseq2.R
+      AnalysisStorage__Root: /data/biohub-analysis
+    volumes:
+      - analysis_data:/data/biohub-analysis:rw
+
+  gateway:
+    image: nginx:alpine
+    profiles:
+      - website
+    ports:
+      - "127.0.0.1:8090:80"
+    volumes:
+      - ./gateway/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - mvc
+      - vue
+    restart: unless-stopped
+
+
+  sql:
+    profiles: [infra]
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
+      MSSQL_PID: Developer
+    ports:
+      - "127.0.0.1:14333:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  mvc:
+    profiles: [website]
+    image: "${MVC_IMAGE:-biohub:mvc-release-test}"
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__BIOHubConnection: "Server=host.docker.internal,14333;Database=BIOHubDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};Encrypt=True;TrustServerCertificate=True"
+      AnalysisStorage__Root: /data/biohub-analysis
+    volumes:
+      - analysis_data:/data/biohub-analysis:rw
+      - dpkeys:/data/biohub-keys:rw
+
+  vue:
+    profiles: [website]
+    image: "${VUE_IMAGE:-biohub-vue:dev}"
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:80"
+
+volumes:
+  sql_data:
+    external: true
+    name: biohub_sql_data
+  analysis_data:
+    external: true
+    name: biohub_analysis_data
+  dpkeys:
+    external: true
+    name: biohub_dpkeys

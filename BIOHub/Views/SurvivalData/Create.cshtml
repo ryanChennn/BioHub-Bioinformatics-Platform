@@ -1,0 +1,70 @@
+﻿@model BIOHub.ViewModels.SurvivalDataCreateViewModel
+@{
+    ViewData["Title"] = "新增存活資料";
+}
+
+<h2>新增存活資料</h2>
+<h5>受試者編號: @ViewBag.SubjectCode </h5>
+
+<hr />
+
+<form asp-controller="SurvivalData"
+asp-action="Create"
+asp-route-subjectId = "@ViewBag.SubjectId"
+method="post">
+
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<h4>OS整體存活期</h4>
+<div class="mb-3">
+        <label asp-for="OS_Month" class="form-label"></label>
+        <input asp-for="OS_Month" class="form-control" type="number" min="0" max="9999.99" step="0.01" />
+        <span asp-validation-for="OS_Month" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="OS_Status" class="form-label"></label>
+    <select asp-for="OS_Status" class="form-select">
+            <option value="">請選擇</option>
+        <option value="0">Censored</option>
+            <option value="1">Dead</option>
+    </select>
+</div>
+
+    <h4>PFS無惡化存活期</h4>
+    <div class="mb-3">
+        <label asp-for="PFS_Month" class="form-label"></label>
+        <input asp-for="PFS_Month" class="form-control" type="number" min="0" max="9999.99" step="0.01" />
+        <span asp-validation-for="PFS_Month" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PFS_Status" class="form-label"></label>
+        <select asp-for="PFS_Status" class="form-select">
+            <option value="">請選擇</option>
+            <option value="0">Censored</option>
+            <option value="1">Progress</option>
+        </select>
+    </div>
+
+    <hr />
+
+    <div class="mb-3">
+        <label asp-for="LastFollowUpDate" class="form-label"></label>
+        <input asp-for="LastFollowUpDate" class="form-control" type="date"  />
+        <span asp-validation-for="LastFollowUpDate" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">儲存</button>
+
+    <a asp-controller="SurvivalData"
+    asp-action="Index"
+    asp-route-subjectId ="@ViewBag.SubjectId"
+    class="btn btn-secondary">返回</a>
+
+</form>
+
+    @section Scripts{
+        <partial name="_ValidationScriptsPartial"></partial>
+    }

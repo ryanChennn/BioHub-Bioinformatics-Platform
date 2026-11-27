@@ -1,0 +1,90 @@
+﻿@model IEnumerable<BIOHub.Models.Samples>
+@{
+    ViewData["Title"] = "檢體管理";
+}
+
+
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div >
+            <h2>檢體管理</h2>
+            <p class="text-muted">
+                受試者編號: @ViewBag.SubjectCode
+            </p>
+            <a asp-controller="Samples"
+               asp-action="Create"
+               asp-route-subjectId="@ViewBag.SubjectId"
+               class="btn btn-primary mb-3">新增檢體</a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+
+        <div class="alert alert-info">
+            此受試者目前尚未建立檢體資料。
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>檢體編號</th>
+                        <th>採集日期</th>
+                        <th>儲存溫度</th>
+                        <th>檢體狀態</th>
+                        <th>建立時間</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.SampleCode</td>
+                            <td>@item.CollectionDate.ToString("yyyy-MM-dd")</td>
+                            <td>@item.StorageTemperature.ToString("0.0")°C</td>
+                            <td>@(item.SampleStatus??"未設定")</td>
+                            <td>@item.CreateAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>
+                                <a asp-controller="Samples"
+                                asp-action="Details"
+                                asp-route-id =" @item.SamplesID"
+                                class="btn btn-outline-primary btn-sm">
+                                    詳細資料
+                                </a>
+                                <a asp-controller="Samples"
+                                   asp-action="Edit"
+                                   asp-route-id=" @item.SamplesID"
+                                   class="btn btn-outline-warning btn-sm">
+                                    編輯
+                                </a>
+                                <a asp-controller="Samples"
+                                   asp-action="Delete"
+                                   asp-route-id=" @item.SamplesID"
+                                   class="btn btn-outline-danger btn-sm">
+                                    刪除
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    
+                </tbody>
+            </table>
+        </div>
+    }
+
+
+    <a asp-controller="Subjects"
+    asp-action="Index"
+    asp-route-ResearchProjectId = "@ViewBag.ResearchProjectId"
+    class="btn btn-secondary mt-3">
+    返回受試者列表
+    </a>
+</div>
+
+

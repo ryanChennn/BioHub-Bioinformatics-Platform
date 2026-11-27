@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BIOHub.AnalysisWorker/BIOHub.AnalysisWorker.csproj" Id="7238aeb7-983c-4f5c-90cf-413a1aefe7a6" />
+  <Project Path="BIOHub/BIOHub.csproj" />
+</Solution>

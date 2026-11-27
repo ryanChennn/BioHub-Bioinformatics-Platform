@@ -1,0 +1,51 @@
+﻿@model BIOHub.Models.Subjects
+
+
+@{
+    ViewData["Title"] = "刪除受試者";
+}
+
+
+<h2>刪除受試者</h2>
+
+<h5>研究計畫: @ViewBag.ProjectName </h5>
+
+<div class="alert alert-warning">
+    確定要刪除此受試者嗎？
+    刪除後將無法復原。
+</div>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<dl class="row">
+    <dt class="col-3">受試者編號</dt>
+    <dd class="col-9">@Model.SubjectCode</dd>
+
+    <dt class="col-3">性別</dt>
+    <dd class="col-9">@Model.Gender</dd>
+
+    <dt class="col-3">年齡</dt>
+    <dd class="col-9">@Model.Age</dd>
+
+    <dt class="col-3">生日</dt>
+    <dd class="col-9">@Model.Birth.ToString("yyyy-MM-dd")</dd>
+
+    <dt class="col-3">收案日期</dt>
+    <dd class="col-9">@Model.EnrollmentDate.ToString("yyyy-MM-dd")</dd>
+
+    <dt class="col-3">受試者狀態</dt>
+    <dd class="col-9">@Model.Status</dd>
+</dl>
+
+
+<form asp-controller="Subjects"
+asp-action="Delete"
+asp-route-id = "@Model.SubjectsID"
+method="post">
+<button class="btn btn-danger" type="submit">確認刪除</button>
+
+<a asp-controller="Subjects" 
+asp-action="Index"
+asp-route-researchProjectId= "@ViewBag.ResearchProjectId"
+class="btn btn-secondary">取消</a>
+</form>

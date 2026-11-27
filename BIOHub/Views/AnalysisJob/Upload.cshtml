@@ -1,0 +1,54 @@
+﻿@model BIOHub.ViewModels.AnalysisFilesUploadViewModel
+@{
+    ViewData["Title"] = "上傳RNAseq資料";
+}
+
+<div class="container py-4">
+    <h2>上傳RNAseq分析資料</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>@ViewBag.JobName</h5>
+            <p class="mb-1">對照組: @ViewBag.ControlGroup</p>
+            <p class="mb-1">實驗組: @ViewBag.TreatmentGroup</p>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        請上傳 UTF-8 CSV 檔案。
+        每個檔案最多 2 MB。
+        Control 和 Treatment 各至少兩個樣本。
+    </div>
+
+    <form asp-controller="AnalysisJob"
+    asp-action="Upload"
+    asp-route-id ="@ViewBag.AnalysisJobID"
+    method="post"
+          @* 沒有這個設定，瀏覽器不會用正確的表單格式傳送檔案，後端的 IFormFile 可能無法正確繫結。 *@
+    enctype="multipart/form-data">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="CountsFiles" class="form-label"></label>
+        <input  asp-for="CountsFiles" type="file" accept=".csv" class="form-control"/>
+        <span asp-validation-for="CountsFiles" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="MetadataFile" class="form-label"></label>
+        <input asp-for="MetadataFile"
+        type="file"
+        accept=".csv"
+        class="form-control"/>
+        <span asp-validation-for="MetadataFile" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">上傳</button>
+
+    <a asp-controller="AnalysisJobs"
+    asp-action="Index"
+    class="btn btn-secondary">取消</a>
+    </form>
+</div>
+
+        @section Scripts{
+            <partial name="_ValidationScriptsPartial"></partial>
+        }

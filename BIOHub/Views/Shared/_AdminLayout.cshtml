@@ -1,0 +1,135 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var pageTitle = ViewData["Title"]?.ToString() ?? "BioHub";
+    var signedIn = User.Identity?.IsAuthenticated == true;
+}
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@pageTitle - BioHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BIOHub.styles.css" asp-append-version="true" />
+    @* Dashboard 2.0 專用 CSS 請保留原有檔案 *@
+    <link rel="stylesheet" href="~/css/biohub-dashboard2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/biohub-admin-layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/biohub-research.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/biohub-research-details.css" asp-append-version="true" />
+    <link rel="stylesheet"
+          href="~/css/biohub-volcano.css"
+          asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+    <link rel="stylesheet"
+          href="~/css/biohub-subjects.css"
+          asp-append-version="true" />
+</head>
+<body class="bh-shell-body">
+    <header class="bh-topbar navbar navbar-light bg-white border-bottom fixed-top">
+        <div class="container-fluid px-3 px-lg-4">
+            <div class="d-flex align-items-center gap-2">
+                @if (signedIn)
+                {
+                    <button class="btn bh-menu-trigger d-lg-none" type="button"
+                            data-bs-toggle="offcanvas" data-bs-target="#bhMobileSidebar"
+                            aria-controls="bhMobileSidebar" aria-label="開啟管理選單">
+                        <i class="bi bi-list fs-4"></i>
+                    </button>
+                }
+                <a class="navbar-brand bh-brand d-flex align-items-center gap-2 mb-0"  @*asp-controller="Home" asp-action="Index" *@
+                   href="http://127.0.0.1:5173/">
+                    <span class="bh-brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+                    <span>BioHub</span>
+                </a>
+                <span class="bh-brand-caption d-none d-md-inline">研究與生物資訊平台</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 gap-sm-3">
+                @if (signedIn)
+                {
+                    <span class="bh-user-name d-none d-sm-inline"><i class="bi bi-person-circle me-1"></i>@User.Identity?.Name</span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-box-arrow-right me-sm-1"></i><span class="d-none d-sm-inline">登出</span>
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-sm btn-outline-primary">登入</a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-sm btn-primary">註冊</a>
+                }
+            </div>
+        </div>
+    </header>
+
+    @if (signedIn)
+    {
+        @* Desktop Sidebar*@
+        <aside class="bh-side-desktop d-none d-lg-flex" aria-label="後台主要導覽">
+            <div class="bh-side-section">工作空間</div>
+            <nav class="bh-side-nav">
+                <a asp-controller="Dashboard" asp-action="Index"
+                   class="bh-side-link @(currentController == "Dashboard" ? "is-active" : "")"
+                   aria-current="@(currentController == "Dashboard" ? "page" : null)">
+                    <i class="bi bi-grid-1x2"></i><span>總覽 Dashboard</span>
+                </a>
+                <a asp-controller="ResearchProjects" asp-action="Index"
+                   class="bh-side-link @(currentController == "ResearchProjects" ? "is-active" : "")"
+                   aria-current="@(currentController == "ResearchProjects" ? "page" : null)">
+                    <i class="bi bi-folder2-open"></i><span>研究計畫</span>
+                </a>
+                <a asp-controller="AnalysisJob" asp-action="Index"
+                   class="bh-side-link @(currentController == "AnalysisJob" ? "is-active" : "")"
+                   aria-current="@(currentController == "AnalysisJob" ? "page" : null)">
+                    <i class="bi bi-activity"></i><span>RNA-seq 分析</span>
+                </a>
+            </nav>
+            <div class="bh-side-note mt-auto">
+                <i class="bi bi-shield-check me-1"></i> 研究資料管理工作空間
+            </div>
+        </aside>
+
+        @* Bootstrap Offcanvas: mobile/tablet *@
+        <div class="offcanvas offcanvas-start bh-mobile-sidebar" tabindex="-1" id="bhMobileSidebar"
+             aria-labelledby="bhMobileSidebarTitle">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title" id="bhMobileSidebarTitle">BioHub 管理選單</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="關閉選單"></button>
+            </div>
+            <div class="offcanvas-body">
+                <nav class="bh-side-nav" aria-label="手機管理導覽">
+                    <a asp-controller="Dashboard" asp-action="Index"
+                       class="bh-side-link @(currentController == "Dashboard" ? "is-active" : "")">
+                        <i class="bi bi-grid-1x2"></i><span>總覽 Dashboard</span>
+                    </a>
+                    <a asp-controller="ResearchProjects" asp-action="Index"
+                       class="bh-side-link @(currentController == "ResearchProjects" ? "is-active" : "")">
+                        <i class="bi bi-folder2-open"></i><span>研究計畫</span>
+                    </a>
+                    <a asp-controller="AnalysisJob" asp-action="Index"
+                       class="bh-side-link @(currentController == "AnalysisJob" ? "is-active" : "")">
+                        <i class="bi bi-activity"></i><span>RNA-seq 分析</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    }
+
+    <div class="bh-shell-content @(signedIn ? "bh-shell-content-admin" : "")">
+        <main role="main" class="bh-shell-main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

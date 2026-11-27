@@ -1,0 +1,77 @@
+﻿@model BIOHub.ViewModels.SamplesEditViewModel
+@{
+    ViewData["Title"] = "編輯檢體資料";
+}
+
+
+<div class="container mt-4">
+    <h2>編輯檢體資料</h2>
+    <h5 class="text-muted">受試者編號: @ViewBag.SubjectCode</h5>
+    <hr />
+
+    <form asp-controller="Samples"
+    asp-action="Edit"
+    asp-route-id="@Model.SamplesID"
+    method="post">
+
+    <input type="hidden" asp-for="SamplesID" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="SampleCode" class="form-label"></label>
+        <input asp-for="SampleCode" class="form-control"/>
+        <span asp-validation-for="SampleCode" class="text-danger"></span>
+    </div>
+
+        <div class="mb-3">
+            <label asp-for="CollectionDate" class="form-label"></label>
+            <input type= "date" asp-for="CollectionDate" class="form-control" />
+            <span asp-validation-for="CollectionDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="StorageTemperature" class="form-label"></label>
+
+            <div class="input-group">
+                <input asp-for="StorageTemperature" class="form-control" 
+                type="number"
+                step="0.1"
+                max="100"
+                min="-200"/>
+                <span  class="input-group-text">°C</span>
+            </div>
+            
+            <span asp-validation-for="StorageTemperature" class="text-danger"></span>
+        </div>
+
+
+        <div class="mb-3">
+            <label asp-for="SampleStatus" class="form-label"></label>
+            <select asp-for="SampleStatus" class="form-select">
+                <option value="">請選擇檢體狀態</option>
+                <option value="Stored">新收集</option>
+                <option value="Used">使用中</option>
+                <option value="Disposed">已銷毀</option>
+                <option value="Over">已使用完畢</option>
+            </select>
+            <span asp-validation-for="SampleStatus" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Remarks" class="form-label"></label>
+            <textarea asp-for="Remarks" class="form-control" rows="5" maxlength="255"></textarea>
+            <span asp-validation-for="Remarks" class="text-danger"></span>
+        </div>
+
+        <button class="btn btn-primary" type="submit">儲存修改</button>
+        <a asp-controller="Samples" 
+            asp-action="Details"
+        asp-route-id="@Model.SamplesID"
+        class="btn btn-secondary">取消</a>
+    </form>
+
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"></partial>
+}
