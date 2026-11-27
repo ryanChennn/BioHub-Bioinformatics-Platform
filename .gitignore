@@ -2,6 +2,7 @@
 .env.*
 !.env.example
 .dockerignore
+.env.portable
 **/biohub-docker.env
 **/bin/
 **/obj/

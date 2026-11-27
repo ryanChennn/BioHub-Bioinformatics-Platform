@@ -1,25 +1,106 @@
-# BioHub - staged Docker Compose for the existing Docker Desktop installation.
-# On this existing Docker Desktop PC: AnalysisWorker runs by default.
-# MVC and Vue start with --profile website. Existing SQL stays external.
-# Images tagged :dev or :mvc-release-test are LOCAL; publishing to others needs build/push.
-name: biohub
+# BioHub portable LOCAL DEMO only — not intended for public/production hosting.
+# On a fresh Windows/Mac/Linux machine with Docker Desktop:
+#   docker compose up -d --build
+#   http://localhost:8090
+# Optional overrides in an untracked .env: MSSQL_SA_PASSWORD, BIOHUB_DEMO_PASSWORD,
+# BIOHUB_DEMO_USERNAME, BIOHUB_UID, BIOHUB_GID.
+# WARNING: The fallback passwords below are PUBLIC and FOR LOCAL DEMO ONLY.
+# Never expose SQL Server or the Gateway to a public network with these credentials.
+name: biohub-portable-release
+
+x-sql-connection: &sql-connection
+  ConnectionStrings__BIOHubConnection: "Server=sql,1433;Database=BIOHubDB;User Id=sa;Password=${MSSQL_SA_PASSWORD:-BioHubLocalSqlDemo2026!};Encrypt=True;TrustServerCertificate=True"
 
 services:
-  analysis-worker:
-    image: biohub-analysis-worker:dev
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
     restart: unless-stopped
-    user: "${BIOHUB_UID}:${BIOHUB_GID}"
     environment:
-      ConnectionStrings__BIOHubConnection: "Server=host.docker.internal,14333;Database=BIOHubDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};Encrypt=True;TrustServerCertificate=True"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:-BioHubLocalSqlDemo2026!}"
+    volumes:
+      - sql_data:/var/opt/mssql
+    # Intentionally NO published SQL port.
+
+  volume-init:
+    image: alpine:3.21
+    user: "0:0"
+    command: ["sh", "-ec", "mkdir -p /data/biohub-analysis /data/biohub-keys && chown -R ${BIOHUB_UID:-1654}:${BIOHUB_GID:-1654} /data/biohub-analysis /data/biohub-keys"]
+    volumes:
+      - analysis_data:/data/biohub-analysis
+      - dpkeys:/data/biohub-keys
+    restart: "no"
+
+  db-init:
+    build:
+      context: .
+      dockerfile: BIOHub/Dockerfile
+      target: final
+    image: biohub:mvc-portable-release
+    restart: "no"
+    environment:
+      <<: *sql-connection
+      ASPNETCORE_ENVIRONMENT: Production
+      BIOHUB_INIT_DB: "true"
+      BIOHUB_DEMO_USERNAME: "${BIOHUB_DEMO_USERNAME:-biohub_demo}"
+      BIOHUB_DEMO_PASSWORD: "${BIOHUB_DEMO_PASSWORD:-BioHubLocalDemo2026!}"
+    volumes:
+      - dpkeys:/data/biohub-keys:rw
+    depends_on:
+      sql:
+        condition: service_started
+      volume-init:
+        condition: service_completed_successfully
+
+  mvc:
+    build:
+      context: .
+      dockerfile: BIOHub/Dockerfile
+      target: final
+    image: biohub:mvc-portable-release
+    restart: unless-stopped
+    environment:
+      <<: *sql-connection
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Production
+      AnalysisStorage__Root: /data/biohub-analysis
+    volumes:
+      - analysis_data:/data/biohub-analysis:rw
+      - dpkeys:/data/biohub-keys:rw
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+      volume-init:
+        condition: service_completed_successfully
+
+  vue:
+    build:
+      context: ./BioHub_Vue
+      dockerfile: Dockerfile
+    image: biohub-vue:portable-release
+    restart: unless-stopped
+
+  analysis-worker:
+    image: ghcr.io/ryanchennn/biohub-analysis-worker:v1
+    pull_policy: always
+    restart: unless-stopped
+    user: "${BIOHUB_UID:-1654}:${BIOHUB_GID:-1654}"
+    environment:
+      <<: *sql-connection
       RNAseqWorker__ScriptPath: /app/RScripts/run_Deseq2.R
       AnalysisStorage__Root: /data/biohub-analysis
     volumes:
       - analysis_data:/data/biohub-analysis:rw
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+      volume-init:
+        condition: service_completed_successfully
 
   gateway:
     image: nginx:alpine
-    profiles:
-      - website
+    restart: unless-stopped
     ports:
       - "127.0.0.1:8090:80"
     volumes:
@@ -27,51 +108,8 @@ services:
     depends_on:
       - mvc
       - vue
-    restart: unless-stopped
-
-
-  sql:
-    profiles: [infra]
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    restart: unless-stopped
-    environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
-      MSSQL_PID: Developer
-    ports:
-      - "127.0.0.1:14333:1433"
-    volumes:
-      - sql_data:/var/opt/mssql
-
-  mvc:
-    profiles: [website]
-    image: "${MVC_IMAGE:-biohub:mvc-release-test}"
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:8080:8080"
-    environment:
-      ASPNETCORE_URLS: http://+:8080
-      ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__BIOHubConnection: "Server=host.docker.internal,14333;Database=BIOHubDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};Encrypt=True;TrustServerCertificate=True"
-      AnalysisStorage__Root: /data/biohub-analysis
-    volumes:
-      - analysis_data:/data/biohub-analysis:rw
-      - dpkeys:/data/biohub-keys:rw
-
-  vue:
-    profiles: [website]
-    image: "${VUE_IMAGE:-biohub-vue:dev}"
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:8081:80"
 
 volumes:
   sql_data:
-    external: true
-    name: biohub_sql_data
   analysis_data:
-    external: true
-    name: biohub_analysis_data
   dpkeys:
-    external: true
-    name: biohub_dpkeys

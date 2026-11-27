@@ -44,6 +44,14 @@ if (OperatingSystem.IsLinux())
 
 var app = builder.Build();
 
+// 專供 Docker Compose db-init 一次性初始化使用，不啟動網站
+if (app.Configuration.GetValue<bool>("BIOHUB_INIT_DB"))
+{
+    await BioHubDemoInitializer.InitializeAsync(app.Services, app.Configuration);
+    return;
+}
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
