@@ -107,32 +107,10 @@ docker compose up -d --build
 
 **入口：<http://localhost:8090>**
 
-### 4. 檢查容器與資料庫初始化
-
-```powershell
-docker compose ps -a
-```
-
-```powershell
-docker compose logs --tail 80 db-init
-```
-
-分析 Worker 日誌：
-
-```powershell
-docker compose logs --tail 80 analysis-worker
-```
-
-停止服務（保留資料）：
-
-```powershell
-docker compose stop
-```
-
 ## RNA-seq 分析工作流程
 
 1. 登入平台，進入研究／分析功能。
-2. 上傳 **Counts Matrix CSV** 與 **Sample Metadata CSV**，選擇分析組別與物種。
+2. 上傳 **Counts Matrix CSV** 與 **Sample Metadata CSV**，選擇分析組別與物種(檔案位於專案中的 SampleData 資料夾)。
 3. MVC 建立 AnalysisJob，工作狀態為 `Queued`。
 4. .NET AnalysisWorker 取得工作並執行 Linux 容器內的 `/app/RScripts/run_Deseq2.R`。
 5. R / DESeq2 產生差異基因表現結果，如 `DEG_results.csv` 與 `VolcanoPlot.png`。
