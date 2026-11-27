@@ -10,18 +10,17 @@ BioHub 是一個以生物資訊與研究資料管理為核心的作品，整合 
 
 ## 功能與完成狀態
 
-| 模組                   | 功能                                                        | 驗證狀態                                                          |
-| ---------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------- |
-| 公開網站               | Vue 3 首頁、功能介紹、關於平台                              | 已驗證                                                            |
-| 統一入口               | Nginx Gateway 代理 `/public/` 至 Vue、其餘路徑至 MVC        | 已驗證                                                            |
-| 使用者驗證             | 自訂 `Users`、密碼雜湊、Cookie Authentication、登入／註冊   | 已驗證                                                            |
-| 研究專案管理           | ResearchProjects CRUD                                       | 已驗證                                                            |
-| RNA-seq 資料輸入       | 上傳 Counts Matrix、Sample Metadata CSV，建立 AnalysisJob   | 已驗證                                                            |
-| 背景運算               | .NET Worker 取得工作，呼叫 Linux 容器中的 Rscript / DESeq2  | 已驗證                                                            |
-| 結果視覺化             | DEG Explorer、Volcano Plot、分析結果檔案                    | 已驗證                                                            |
-| 資料庫初始化           | 全新 SQL Server Volume、EF Core Migrations、Demo 帳號初始化 | 已在獨立 Compose 專案測試成功                                     |
-| 跨環境容器部署         | MVC／Vue 建置、Worker 由 GHCR 下載                          | 已在重新 Clone 的目錄與全新 Volume 驗證；尚未在第二台實體電腦測試 |
-| 臨床／檢體完整管理流程 | 規劃與持續開發                                              | 尚未宣稱完整驗證                                                  |
+| 模組             | 功能                                                        | 驗證狀態                                |
+| ---------------- | ----------------------------------------------------------- | --------------------------------------- |
+| 公開網站         | Vue 3 首頁、功能介紹、關於平台                              | 已驗證                                  |
+| 統一入口         | Nginx Gateway 代理 `/public/` 至 Vue、其餘路徑至 MVC        | 已驗證                                  |
+| 使用者驗證       | 自訂 `Users`、密碼雜湊、Cookie Authentication、登入／註冊   | 已驗證                                  |
+| 研究專案管理     | ResearchProjects CRUD                                       | 已驗證                                  |
+| RNA-seq 資料輸入 | 上傳 Counts Matrix、Sample Metadata CSV，建立 AnalysisJob   | 已驗證                                  |
+| 背景運算         | .NET Worker 取得工作，呼叫 Linux 容器中的 Rscript / DESeq2  | 已驗證                                  |
+| 結果視覺化       | DEG Explorer、Volcano Plot、分析結果檔案                    | 已驗證                                  |
+| 資料庫初始化     | 全新 SQL Server Volume、EF Core Migrations、Demo 帳號初始化 | 已在獨立 Compose 專案測試成功           |
+| 跨環境容器部署   | MVC／Vue 建置、Worker 由 GHCR 下載                          | 已在重新 Clone 的目錄與全新 Volume 驗證 |
 
 ## 技術架構
 
