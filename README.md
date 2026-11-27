@@ -1,202 +1,196 @@
-# BioHub
+# BioHub — Bioinformatics & Clinical Research Management Platform
 
-**生物資訊與臨床研究管理平台 (Bioinformatics & Clinical Research Management Platform)**
+**生物資訊與臨床研究管理平台｜全端開發 × RNA-seq 分析 × Docker 容器化部署**
 
-BioHub 是一個結合**研究資料管理**與 **RNA-seq 差異基因表現分析**的全端網站作品。專案以 ASP.NET Core MVC、Vue 3、SQL Server、.NET Worker Service、R / DESeq2 和 Docker 建構，將資料上傳、工作排程、分析執行與結果展示整合為可操作的研究工作流程。
+BioHub 是一個以生物資訊與研究資料管理為核心的作品，整合 **Vue 3 公開網站、ASP.NET Core MVC 管理平台、SQL Server、.NET AnalysisWorker 與 R / DESeq2**。使用者可登入平台、管理研究專案、上傳 RNA-seq Counts Matrix 與 Sample Metadata、建立差異表現分析工作，並在網頁中查看 DEG Explorer 與 Volcano Plot。
 
-> **專案定位：** 以生物資訊分析與研究資料管理為核心，展示跨領域開發能力；實驗室服務販售或商務相關功能於後續進行擴充。
+本專案以 **Nginx Gateway 提供單一網站入口**，並使用 Docker Compose 管理服務及全新資料庫初始化，方便在另一個 Docker 環境重現展示流程。
 
-## 功能總覽
+> **專案定位：** 展示生物資訊工作流程與全端系統設計的整合能力。實驗室服務商務功能、完整臨床／檢體資料管理與進階權限系統為後續擴充方向。
 
-| 模組               | 主要功能                                                                                                      | 目前狀態     |
-| ------------------ | ------------------------------------------------------------------------------------------------------------- | ------------ |
-| 公開網站與單一入口 | Vue 3 製作首頁、平台介紹與功能展示；Nginx Gateway 統一入口，透過「登入平台」導向同一網域的 MVC 登入頁         | 已於本機驗證 |
-| 使用者系統         | 註冊、登入、Cookie Authentication、登入狀態管理                                                               | 已於本機驗證 |
-| 研究專案管理       | ResearchProjects 建立、查詢、修改、刪除（CRUD）                                                               | 已於本機驗證 |
-| RNA-seq 分析工作   | 上傳 Counts Matrix 與 Sample Metadata CSV、建立分析工作、佇列處理                                             | 已於本機驗證 |
-| 差異表現分析       | Linux AnalysisWorker 直接呼叫 Rscript / DESeq2，支援 Human、Mouse、Rat 的註解套件                             | 已於本機驗證 |
-| 分析結果           | DEG 結果 CSV、DEG Explorer、Volcano Plot                                                                      | 已於本機驗證 |
-| 容器化服務         | Nginx Gateway、MVC、Vue/Nginx、AnalysisWorker 由 Docker Compose 啟動；SQL Server 目前使用既有獨立 Docker 容器 | 已於本機驗證 |
-| 臨床及檢體完整模組 | 完整臨床研究資料與檢體管理工作流程                                                                            | 持續開發中   |
+## 功能與完成狀態
 
-## 使用技術
+| 模組                   | 功能                                                        | 驗證狀態                                                          |
+| ---------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------- |
+| 公開網站               | Vue 3 首頁、功能介紹、關於平台                              | 已驗證                                                            |
+| 統一入口               | Nginx Gateway 代理 `/public/` 至 Vue、其餘路徑至 MVC        | 已驗證                                                            |
+| 使用者驗證             | 自訂 `Users`、密碼雜湊、Cookie Authentication、登入／註冊   | 已驗證                                                            |
+| 研究專案管理           | ResearchProjects CRUD                                       | 已驗證                                                            |
+| RNA-seq 資料輸入       | 上傳 Counts Matrix、Sample Metadata CSV，建立 AnalysisJob   | 已驗證                                                            |
+| 背景運算               | .NET Worker 取得工作，呼叫 Linux 容器中的 Rscript / DESeq2  | 已驗證                                                            |
+| 結果視覺化             | DEG Explorer、Volcano Plot、分析結果檔案                    | 已驗證                                                            |
+| 資料庫初始化           | 全新 SQL Server Volume、EF Core Migrations、Demo 帳號初始化 | 已在獨立 Compose 專案測試成功                                     |
+| 跨環境容器部署         | MVC／Vue 建置、Worker 由 GHCR 下載                          | 已在重新 Clone 的目錄與全新 Volume 驗證；尚未在第二台實體電腦測試 |
+| 臨床／檢體完整管理流程 | 規劃與持續開發                                              | 尚未宣稱完整驗證                                                  |
 
-| 類別     | 技術                                                               |
-| -------- | ------------------------------------------------------------------ |
-| 公開網站 | Vue 3、Vite、JavaScript、HTML、CSS、Bootstrap 5                    |
-| 後端網站 | C#、ASP.NET Core MVC、.NET 10                                      |
-| 資料存取 | SQL Server 2022、Entity Framework Core                             |
-| 身分驗證 | ASP.NET Core Cookie Authentication（未採用 ASP.NET Core Identity） |
-| 背景工作 | .NET Worker Service、資料庫工作佇列                                |
-| 生物資訊 | R、DESeq2、AnnotationDbi、org.Hs.eg.db、org.Mm.eg.db、org.Rn.eg.db |
-| 部署     | Docker、Docker Compose、Nginx Gateway（Reverse Proxy）、Nginx      |
+## 技術架構
 
-## 系統架構
+| 層級     | 技術                                                                                             |
+| -------- | ------------------------------------------------------------------------------------------------ |
+| 公開前端 | Vue 3、Vite、JavaScript、HTML、CSS                                                               |
+| 管理介面 | ASP.NET Core MVC、Razor、Bootstrap 5、C#、.NET 10                                                |
+| 資料庫   | Microsoft SQL Server 2022、Entity Framework Core Migrations                                      |
+| 身分驗證 | ASP.NET Core Cookie Authentication、`PasswordHasher<Users>`（不使用 ASP.NET Core Identity 系統） |
+| 背景分析 | .NET Worker Service、Rscript、DESeq2                                                             |
+| 分析註解 | AnnotationDbi 與 Human／Mouse／Rat 註解套件                                                      |
+| 基礎設施 | Docker Compose、Nginx Gateway、Docker named volumes、GitHub Container Registry（GHCR）           |
 
-BioHub 採用 **Nginx Gateway 單一入口**。使用者在本機僅需開啟 `http://localhost:8090`，即可由 Vue 公開首頁進入 MVC 登入及研究管理平台，無須自行切換不同連接埠。
+### 系統運作示意
 
 ```text
-瀏覽器：http://localhost:8090
-              │
-              ▼
-     Nginx Gateway（反向代理）
-              │
-       ┌──────┴──────────────┐
-       ▼                     ▼
-  /public/               /Account/Login 等 MVC 路由
-  Vue 3 + Nginx           ASP.NET Core MVC
-  首頁／功能介紹            登入／Dashboard／研究管理
-                             │
-                ┌────────────┴─────────────┐
-                ▼                          ▼
-             SQL Server                AnalysisJob：Queued
-         使用者／專案／結果                   │
-                                           ▼
+                  瀏覽器
+          http://localhost:8090
+                      │
+                      ▼
+               Nginx Gateway
+                      │
+          ┌───────────┴───────────┐
+          │                       │
+          ▼                       ▼
+       /public/             MVC 管理路由
+      Vue 3 網站           ASP.NET Core MVC
+       (Nginx)             登入／研究管理
+                                  │
+                           ┌──────┴─────────┐
+                           │                │
+                           ▼                ▼
+                       SQL Server     AnalysisJob
+                       使用者/專案        Queued
+                       工作/結果            │
+                                            ▼
                                    .NET AnalysisWorker
-                                           │
-                                           ▼
+                                            │
+                                            ▼
                                       R / DESeq2
-                                           │
-                                           ▼
-                               DEG_results.csv、VolcanoPlot.png
-                                           │
-                                           ▼
-                               MVC：DEG Explorer／結果下載
+                                            │
+                                            ▼
+                               DEG CSV / Volcano Plot
+                                            │
+                                            ▼
+                                   MVC 結果檢視與下載
 ```
 
-**入口路由：**
+Gateway 路由說明：
 
-| 路徑               | 實際功能                                        |
-| ------------------ | ----------------------------------------------- |
-| `/`                | 重新導向 `/public/`（Vue 公開首頁）             |
-| `/public/`         | Vue 首頁                                        |
-| `/public/features` | 平台功能介紹                                    |
-| `/public/about`    | 關於 BioHub                                     |
-| `/Account/Login`   | ASP.NET Core MVC 登入                           |
-| MVC 其他管理路由   | Dashboard、ResearchProjects、AnalysisJob 等功能 |
+| 路徑                                    | 頁面或功能                                    |
+| --------------------------------------- | --------------------------------------------- |
+| `http://localhost:8090`                 | 單一入口，自動轉至 `/public/`                 |
+| `http://localhost:8090/public/`         | Vue 公開首頁                                  |
+| `http://localhost:8090/public/features` | 功能介紹                                      |
+| `http://localhost:8090/public/about`    | 關於平台                                      |
+| `http://localhost:8090/Account/Login`   | ASP.NET Core MVC 登入頁                       |
+| 其他 MVC 路由                           | Dashboard、研究專案管理、RNA-seq 分析與視覺化 |
 
-Vue 的 Vite `base` 設為 `/public/`，Vue Router 使用 `createWebHistory(import.meta.env.BASE_URL)`；公開首頁的登入連結採用相對路徑 `/Account/Login`，由 Gateway 轉送至 MVC，避免寫死 `8080` 連接埠。
+## 快速開始：Docker Compose
 
-### 資料持久化
+### 前置需求
 
-本機環境目前使用三個 Docker named volumes：
+- Git
+- Docker Desktop，並使用 **Linux containers**（或具備 Linux 容器能力的 Docker Engine 與 Compose）
+- 足夠的磁碟空間與記憶體，以下載 SQL Server 及大型 R / DESeq2 Worker Image；首次啟動需能連接 Docker Registry / GHCR
+- 本機的 `8090` 埠尚未被其他服務使用
 
-- `biohub_sql_data`：SQL Server 資料庫檔案。
-- `biohub_analysis_data`：上傳 CSV 與 R 分析輸出，MVC 與 Worker 共用。
-- `biohub_dpkeys`：ASP.NET Core Data Protection Keys，維持 Cookie 加解密所需金鑰。
-
-以上 volumes **只存在執行 Docker 的主機**，不會隨 GitHub clone 自動產生既有資料。
-
-## 已驗證的本機展示
-
-**主要入口：<http://localhost:8090>**（在執行 Docker 的電腦上開啟）。
-
-| 網址／服務                            | 用途                                                                 |
-| ------------------------------------- | -------------------------------------------------------------------- |
-| `http://localhost:8090`               | **唯一建議入口**，自動轉至 Vue 公開首頁                              |
-| `http://localhost:8090/public/`       | Vue 首頁（經 Gateway）                                               |
-| `http://localhost:8090/Account/Login` | MVC 登入（經 Gateway）                                               |
-| `http://localhost:8080`               | MVC 原有直連埠，僅供本機維護／排錯                                   |
-| `http://localhost:8081`               | Vue 原有直連埠，僅供本機維護／排錯；其資源現已配置為 `/public/` 前綴 |
-| AnalysisWorker                        | Docker Compose 背景服務，無對外網頁                                  |
-| SQL Server                            | 既有獨立容器 `biohub-sql`，目前使用本機 `127.0.0.1:14333`            |
-
-**本機驗證結果：** 已確認 Nginx Gateway 可提供 Vue 公開首頁與 MVC 統一登入入口，並驗證 MVC 研究管理功能及 Linux Worker 執行 R / DESeq2 的分析流程。Gateway 的新入口不代表已完成公共網域或 HTTPS 部署。
-
-## Docker Compose 操作（目前已驗證的開發電腦）
-
-作者已在 Docker Desktop 上驗證 **Gateway、MVC、Vue 和 AnalysisWorker** 的 Compose 運作。SQL Server 仍由既有獨立容器提供服務，Compose 使用本機已建立的 Images 和 named volumes；
-
-前置條件：
-
-- Docker Desktop 已啟動，`biohub-sql` 可正常連線，三個 named volumes 已存在。
-- 根目錄 `.env` 已依 `.env.example` 設定；請勿將含有密碼的 `.env` 提交 GitHub。
-- 本機已有對應的 MVC、Vue 與 Worker Images；Gateway 使用 `nginx:alpine`。
-- `compose.yaml` 已包含 `gateway` 服務與 `./gateway/default.conf` 掛載，並以 `/public/` 轉發 Vue、其他路徑轉發 MVC。
-
-在專案根目錄檢查設定：
+### 1. Clone 專案
 
 ```powershell
-docker compose --profile website config --quiet
+git clone https://github.com/ryanChennn/BioHub-Bioinformatics-Platform.git
+cd BioHub-Bioinformatics-Platform
 ```
 
-確認既有 SQL Server 已運行後，啟動應用程式及 Gateway（不額外啟動 `sql` profile）：
+### 2. 一行啟動
+
+在專案根目錄執行：
 
 ```powershell
-docker compose --profile website up -d analysis-worker mvc vue gateway
+docker compose up -d --build
 ```
 
-若只需要更新 Gateway 設定，先確認 `gateway/default.conf` 正確，再檢查與重新載入：
+此流程會：
+
+1. 下載／啟動 SQL Server 2022，建立 Docker named volume。
+2. 透過 `volume-init` 處理分析資料與 ASP.NET Core 金鑰目錄的權限。
+3. 使用 MVC Image 的 `db-init` 模式套用 EF Core Migrations，初始化展示帳號。
+4. 從 GHCR 下載已建立的 AnalysisWorker Image：`ghcr.io/ryanchennn/biohub-analysis-worker:v1`。
+5. 建置並啟動 MVC、Vue／Nginx，以及 Nginx Gateway。
+
+**首次啟動需要下載及建置容器，請確認服務已啟動、`db-init` 已成功結束後再開啟網站。**
+
+### 3. 開啟 BioHub
+
+**入口：<http://localhost:8090>**
+
+### 4. 檢查容器與資料庫初始化
 
 ```powershell
-docker exec biohub-gateway-1 nginx -t
-docker exec biohub-gateway-1 nginx -s reload
+docker compose ps -a
 ```
-
-檢查服務狀態與記錄：
 
 ```powershell
-docker compose --profile website ps
-docker compose --profile website logs --tail 50 gateway mvc vue analysis-worker
+docker compose logs --tail 80 db-init
 ```
 
-測試統一入口：
+分析 Worker 日誌：
 
 ```powershell
-curl.exe -I http://localhost:8090/
-curl.exe -I http://localhost:8090/public/
-curl.exe -I http://localhost:8090/Account/Login
+docker compose logs --tail 80 analysis-worker
 ```
 
-第一項預期是導向 `/public/` 的 302，後兩項應能正常回應；實際登入應在瀏覽器中測試，並確認 Dashboard 與分析結果可開啟。**若 Nginx 將首頁導向 `http://localhost/public/` 丟失埠號**，需確認 Gateway 的 `absolute_redirect off;` 設定。
-
-停止 Compose 應用程式請使用：
+停止服務（保留資料）：
 
 ```powershell
-docker compose --profile website stop
+docker compose stop
 ```
 
-請勿執行 `docker compose down -v` 或刪除既有 volumes，以免遺失測試資料。
+## RNA-seq 分析工作流程
 
-### 在其他電腦執行前，仍需完成
+1. 登入平台，進入研究／分析功能。
+2. 上傳 **Counts Matrix CSV** 與 **Sample Metadata CSV**，選擇分析組別與物種。
+3. MVC 建立 AnalysisJob，工作狀態為 `Queued`。
+4. .NET AnalysisWorker 取得工作並執行 Linux 容器內的 `/app/RScripts/run_Deseq2.R`。
+5. R / DESeq2 產生差異基因表現結果，如 `DEG_results.csv` 與 `VolcanoPlot.png`。
+6. 工作狀態更新為 `Completed`（失敗時顯示 `Failed`）。
+7. 使用者可在 MVC 查看 DEG Explorer、Volcano Plot 與結果檔案。
 
-1. 安裝 Docker Desktop（Linux containers 模式），取得專案原始碼。
-2. 由 `.env.example` 建立 `.env`，填入自行設定的密碼、UID/GID 及環境參數；**勿提交 `.env`**。
-3. 確認 MVC、Vue、Worker 的 Dockerfile 均可由原始碼建立，尤其 Worker 所需 R / DESeq2 基礎映像可重現建置或取得。
-4. 建立及初始化 SQL Server 資料庫，套用 EF Core migrations；準備匿名化的示範帳號、CSV 和分析資料。
-5. 調整 `compose.yaml` 中仍依賴作者主機的設定（例如既有容器、Images、volumes 或環境變數），再進行完整測試。
+### 核心設計特色
 
-**目前尚未驗證「另一台全新電腦 clone 後執行 `docker compose up -d --build` 即可運作」。** 在完成以上準備前，請以原始碼與本機成果說明為主。
+- **跨技術整合：** 以 C# 管理網站與工作狀態，由 R / DESeq2 專責生物資訊運算。
+- **背景工作解耦：** 長時間分析不阻塞 MVC 的使用者請求。
+- **單一入口：** Vue 與 MVC 分別部署，透過 Nginx Gateway 對外提供統一網址。
+- **資料持久化：** SQL 資料、分析輸入／輸出、Data Protection Keys 分別儲存於 Docker named volumes。
+- **部署可重現性：** SQL 初始化由 EF Core Migrations 完成，R Worker 由 GHCR 發佈，無須在每台新電腦手動安裝 DESeq2。
 
-## RNA-seq 分析流程
+## 專案目錄（主要組件）
 
-1. 使用者登入 MVC 平台並建立 AnalysisJob。
-2. 上傳 Counts Matrix CSV 及 Sample Metadata CSV，設定對照組、實驗組與物種。
-3. 系統將工作設為 `Queued`；Worker 認領後更新成 `Running`。
-4. Worker 在 Linux 容器直接執行 `/app/RScripts/run_Deseq2.R`。
-5. DESeq2 分析產生 `DEG_results.csv` 與 `VolcanoPlot.png`，寫入共用分析資料目錄。
-6. 成功時儲存分析結果並更新為 `Completed`；失敗時記錄 `Failed`。
-7. 使用者在 MVC 查看 DEG Explorer、火山圖及結果檔案。
+```text
+BioHub-Bioinformatics-Platform/
+├── compose.yaml                    # 本機展示版 Docker Compose
+├── .env.example                    # 環境變數參考（非私密設定）
+├── gateway/
+│   └── default.conf               # Nginx Gateway 路由
+├── BIOHub/
+│   ├── Dockerfile                  # ASP.NET Core MVC Image
+│   ├── Program.cs
+│   └── Services/
+│       └── BioHubDemoInitializer.cs
+├── BIOHub.AnalysisWorker/
+│   └── Dockerfile                  # Worker 原始建置設定
+└── BioHub_Vue/
+    └── Dockerfile                  # Vue／Nginx Image
+```
 
-## 專案設計重點
+## 驗證紀錄與限制
 
-- **資料分層：** MVC / EF Core 管理應用程式資料，R 專責 RNA-seq 分析。
-- **非同步工作處理：** 運算較重的分析由獨立 Worker 執行，避免使用者請求一直等待。
-- **共用持久化資料：** 使用 Docker named volume 交換上傳檔案與分析輸出。
-- **統一入口：** Nginx Gateway 以單一網址整合 Vue 公開網站與 MVC 管理系統；內部服務仍維持獨立部署。
-- **實際限制：** 目前為作品展示及開發驗證版本；正式公開部署還需要進一步處理 HTTPS、權限控管、機密管理、資料備份、工作中斷恢復與監控。
-
-## 專案安全與資料聲明
-
-- 測試資料應為自製、公開授權或充分去識別化的資料；若使用外部資料集，請標明來源與授權。
+- 已在 Docker Desktop 上完成 Vue／MVC Gateway 整合、登入、研究管理、RNA-seq 分析與結果視覺化測試。
+- 已從 GitHub 重新 Clone，使用**獨立 Compose 專案名稱及全新 SQL Server Volume**，驗證資料庫初始化與 Demo 登入；此環境的 Bootstrap 靜態資源問題已修復。
+- 現階段定位為**面試展示／開發作品**，不是已經完成安全強化的對外正式服務。正式上線仍需加入 HTTPS、機密管理、最小權限資料庫帳號、細緻授權、備份／還原、監控與工作恢復機制。
+- 臨床資料若涉及個資或病患資訊，不應直接使用本展示版儲存真實資料；僅使用自製、公開授權或充分去識別化之測試資料。
 
 ## 後續規劃
 
-- 補齊臨床資料與檢體管理工作流程及權限管理。
-- 完善可在新主機重現的 Docker Compose 建置、資料庫初始化與示範資料。
-- 改善工作逾時、重試、恢復及錯誤監控。
-- 將配置、密碼、HTTPS 反向代理及部署設定整理為適合正式環境的版本。
+- 完善臨床資料與檢體管理模組，以及角色與權限控管。
+- 強化背景工作的重試、逾時、錯誤追蹤與監控。
+- 加入更完整的可重現分析範例資料、CI/CD、自動測試與安全部署方式。
 
 ---
 
-**BioHub — 以生物資訊專業經驗為出發點，整合研究資料管理、全端網站開發與 RNA-seq 分析流程的專案作品。**
+**BioHub — 以生物資訊專業為基礎，整合研究資料管理、全端網站開發與 RNA-seq 差異表現分析的作品。**
