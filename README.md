@@ -144,13 +144,6 @@ BioHub-Bioinformatics-Platform/
     └── Dockerfile                  # Vue／Nginx Image
 ```
 
-## 驗證紀錄與限制
-
-- 已在 Docker Desktop 上完成 Vue／MVC Gateway 整合、登入、研究管理、RNA-seq 分析與結果視覺化測試。
-- 已從 GitHub 重新 Clone，使用**獨立 Compose 專案名稱及全新 SQL Server Volume**，驗證資料庫初始化與 Demo 登入；此環境的 Bootstrap 靜態資源問題已修復。
-- 現階段定位為**面試展示／開發作品**，不是已經完成安全強化的對外正式服務。正式上線仍需加入 HTTPS、機密管理、最小權限資料庫帳號、細緻授權、備份／還原、監控與工作恢復機制。
-- 臨床資料若涉及個資或病患資訊，不應直接使用本展示版儲存真實資料；僅使用自製、公開授權或充分去識別化之測試資料。
-
 ## 後續規劃
 
 - 完善臨床資料與檢體管理模組，以及角色與權限控管。
