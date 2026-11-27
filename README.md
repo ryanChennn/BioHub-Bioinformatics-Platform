@@ -69,17 +69,6 @@ BioHub 是一個以生物資訊與研究資料管理為核心的作品，整合 
                                    MVC 結果檢視與下載
 ```
 
-Gateway 路由說明：
-
-| 路徑                                    | 頁面或功能                                    |
-| --------------------------------------- | --------------------------------------------- |
-| `http://localhost:8090`                 | 單一入口，自動轉至 `/public/`                 |
-| `http://localhost:8090/public/`         | Vue 公開首頁                                  |
-| `http://localhost:8090/public/features` | 功能介紹                                      |
-| `http://localhost:8090/public/about`    | 關於平台                                      |
-| `http://localhost:8090/Account/Login`   | ASP.NET Core MVC 登入頁                       |
-| 其他 MVC 路由                           | Dashboard、研究專案管理、RNA-seq 分析與視覺化 |
-
 ## 快速開始：Docker Compose
 
 ### 前置需求
